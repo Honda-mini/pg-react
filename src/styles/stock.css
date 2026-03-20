@@ -1,0 +1,95 @@
+.stock-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.stock-card {
+  display: block;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease;
+}
+
+.stock-card:hover {
+  transform: translateY(-4px);
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.stock-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.car-title {
+  margin: 10px 0 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.car-mileage {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.car-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.view-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.badge {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.badge-sold {
+  background: #d9534f;
+  color: white;
+}
+
+.badge-reserved {
+  background: #f0ad4e;
+  color: white;
+}
+
+.badge-featured {
+  background: #0275d8;
+  color: white;
+}

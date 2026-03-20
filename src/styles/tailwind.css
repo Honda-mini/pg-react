@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Custom CSS */
+.slick-slide > div {
+  height: 100%;
+  display: flex;
+}

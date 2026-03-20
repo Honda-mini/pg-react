@@ -1,0 +1,227 @@
+[14-Mar-2026 18:02:36 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'USER'@'localhost' (using password: YES) in /home/causeway/public_html/pgservices.net/api/cars.php:5
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(5): mysqli->__construct()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 5
+[14-Mar-2026 18:12:42 UTC] PHP Warning:  require_once(Connections/pg_services.php): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 5
+[14-Mar-2026 18:12:42 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'Connections/pg_services.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 5
+[14-Mar-2026 18:12:44 UTC] PHP Warning:  require_once(Connections/pg_services.php): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 5
+[14-Mar-2026 18:12:44 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'Connections/pg_services.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 5
+[14-Mar-2026 18:13:18 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:13:19 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:13:20 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:17:31 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:17:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:17:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:17:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:17:33 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:11
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(11): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 11
+[14-Mar-2026 18:20:56 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:20:56 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:25:05 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:25:05 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:27:50 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:27:50 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:27:51 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:27:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:31 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:31 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:52 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:53 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:53 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:54 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:28:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:18 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:18 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:19 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:20 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:20 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:21 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:21 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:34 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:34 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:37 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:29:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:38:28 UTC] PHP Warning:  require_once(1): Failed to open stream: No such file or directory in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:38:28 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '1' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/causeway/public_html/pgservices.net/api/cars.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 8
+[14-Mar-2026 18:38:49 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:14
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(14): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 14
+[14-Mar-2026 18:38:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:14
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(14): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 14
+[14-Mar-2026 18:38:50 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:14
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(14): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 14
+[14-Mar-2026 18:39:15 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'causeway_pgServices.cars' doesn't exist in /home/causeway/public_html/pgservices.net/api/cars.php:14
+Stack trace:
+#0 /home/causeway/public_html/pgservices.net/api/cars.php(14): mysqli->query()
+#1 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 14
+[14-Mar-2026 18:41:30 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 25
+[14-Mar-2026 18:41:30 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 25
+[14-Mar-2026 18:41:30 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 25
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Undefined variable $row in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/causeway/public_html/pgservices.net/api/cars.php on line 47
+[14-Mar-2026 21:56:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function formatPrice() in /home/causeway/public_html/pgservices.net/api/cars.php:52
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 52
+[14-Mar-2026 22:02:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function formatPrice() in /home/causeway/public_html/pgservices.net/api/cars.php:52
+Stack trace:
+#0 {main}
+  thrown in /home/causeway/public_html/pgservices.net/api/cars.php on line 52
+[14-Mar-2026 22:11:38 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 23
+[14-Mar-2026 22:11:38 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 23
+[14-Mar-2026 22:11:38 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 23
+[14-Mar-2026 22:11:38 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/causeway/public_html/pgservices.net/api/cars.php on line 23

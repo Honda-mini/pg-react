@@ -1,0 +1,211 @@
+/* Dark mode styles */
+.dark {
+  color-scheme: dark;
+}
+
+/* Slick slider base styles */
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.slick-list {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-list:focus {
+  outline: none;
+}
+
+.slick-list.dragging {
+  cursor: pointer;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+
+.slick-track:before,
+.slick-track:after {
+  display: table;
+  content: '';
+}
+
+.slick-track:after {
+  clear: both;
+}
+
+.slick-loading .slick-track {
+  visibility: hidden;
+}
+
+.slick-slide {
+  display: none;
+  float: left;
+  height: 100%;
+  min-height: 1px;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-slide img {
+  display: block;
+}
+
+.slick-slide.slick-loading img {
+  display: none;
+}
+
+.slick-slide.dragging img {
+  pointer-events: none;
+}
+
+.slick-initialized .slick-slide {
+  display: block;
+}
+
+.slick-loading .slick-slide {
+  visibility: hidden;
+}
+
+.slick-vertical .slick-slide {
+  display: block;
+  height: auto;
+  border: 1px solid transparent;
+}
+
+/* Slick slider custom styles */
+.slick-dots {
+  bottom: -40px;
+  position: relative;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 20px 0 0;
+  list-style: none;
+}
+
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  cursor: pointer;
+  color: transparent;
+  border: 0;
+  outline: none;
+  background: #d1d5db;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.slick-dots li button:hover,
+.slick-dots li button:focus {
+  outline: none;
+  background: #3b82f6;
+}
+
+.dark .slick-dots li button:hover,
+.dark .slick-dots li button:focus {
+  background: #eab308;
+}
+
+.slick-dots li.slick-active button {
+  background: #3b82f6;
+  width: 32px;
+  border-radius: 6px;
+}
+
+.dark .slick-dots li.slick-active button {
+  background: #eab308;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Override for elements that shouldn't transition */
+img, video, canvas, .no-transition {
+  transition: none;
+}
+
+.nav-link {
+  @apply text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors;
+}
+
+.mobile-link {
+  @apply text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors py-2;
+}
+ 
+/* Smooth theme transition */
+html, body, 
+*, 
+*::before, 
+*::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease,
+    box-shadow 0.4s ease;
+}
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* Fullscreen landscape mode for vehicle gallery */
+@media (orientation: landscape) and (max-width: 768px) {
+  .vehicle-gallery img {
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+  }
+}
+/* Landscape fullscreen for mobile */
+@media (orientation: landscape) and (max-width: 768px) {
+  .vehicle-gallery-premium img {
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+  }
+}
