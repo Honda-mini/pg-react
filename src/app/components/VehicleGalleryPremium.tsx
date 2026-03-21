@@ -45,11 +45,11 @@ export default function VehicleGalleryPremium({ images }: Props) {
       </div>
 
       {/* DESKTOP HERO + THUMBNAILS */}
-      <div className="hidden md:flex gap-4">
+      <div className="hidden md:flex gap-6 justify-center items-start">
 
         {/* HERO IMAGE */}
         <div
-          className="flex-1 flex mt-2.5 items-center justify-center rounded-lg cursor-pointer"
+          className="flex flex-1 max-w-[900px] mt-2.5 items-center justify-center rounded-lg cursor-pointer"
         >
           <img
             src={images[active]}
@@ -61,7 +61,7 @@ export default function VehicleGalleryPremium({ images }: Props) {
         </div>
 
         {/* THUMBNAILS */}
-        <div className="w-32 flex flex-col gap-3 overflow-y-scroll max-h-[650px] pr-2">
+        <div className="w-28 flex flex-col gap-3 max-h-[650px] overflow-y-auto pr-2 pt-2 border-l border-gray-200 dark:border-gray-700 pl-3">
           {images.map((src, i) => (
             <button
               key={i}
@@ -73,11 +73,10 @@ export default function VehicleGalleryPremium({ images }: Props) {
               }`}
             >
 <img
-  src={src.replace(/\/([^\/]+)$/, "/$1")}
+  src={src.replace(".webp", "_400.webp")}
   className="w-full h-24 object-cover"
   alt={`Thumbnail ${i + 1}`}
 />
-
             </button>
           ))}
         </div>
