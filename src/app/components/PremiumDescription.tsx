@@ -1,67 +1,47 @@
 import React from "react";
-import { cleanText, extractSections } from "./descriptionFormatter"; // adjust path
 
 interface Props {
   raw: string;
 }
 
 export function PremiumDescription({ raw }: Props) {
-  const cleaned = cleanText(raw || "");
-  const s = extractSections(cleaned);
+  if (!raw) return null;
 
-  return (
-    <div className="space-y-6 text-gray-800 dark:text-white leading-relaxed">
+  // Remove rogue ? but keep ticks ✓/✅
+  const cleaned = raw.replace(/\?+/g, " ");
 
-      {/* Intro */}
-      {s.intro && (
-        <p className="text-lg">
-          {s.intro.trim()}
-        </p>
-      )}
+  // Split into lines
+  const lines = cleaned
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
-      {/* Key Features */}
-      {s.features.length > 0 && (
-        <section>
-          <h3 className="font-semibold text-gray-900 mb-2">Key Features</h3>
-          <ul className="list-disc list-inside space-y-1">
-            {s.features.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+  const elements: React.ReactNode[] = [];
+  let currentList: string[] = [];
 
-      {/* Included at Asking Price */}
-      {s.priceIncludes.length > 0 && (
-        <section>
-          <h3 className="font-semibold text-gray-900 mb-2">
-            Included at Asking Price
-          </h3>
-          <ul className="list-disc list-inside space-y-1">
-            {s.priceIncludes.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+  const flushList = () => {
+    if (currentList.length > 0) {
+      elements.push(
+        <ul className="list-none space-y-1" key={elements.length}>
+          {currentList.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
 
-      {/* Dealer Information */}
-      {s.dealerInfo && (
-        <section>
-          <h3 className="font-semibold text-gray-900 mb-2">
-            Dealer Information
-          </h3>
-          <p>{s.dealerInfo.trim()}</p>
-        </section>
-      )}
+  lines.forEach((line) => {
+    if (line.startsWith("✓") || line.startsWith("✅")) {
+      currentList.push(line);
+    } else {
+      flushList();
+      elements.push(<p key={elements.length}>{line}</p>);
+    }
+  });
 
-      {/* Contact */}
-      {s.contact && (
-        <section>
-          <h3 className="font-semibold text-gray-900 mb-2">Contact</h3>
-          <p>{s.contact.trim()}</p>
-        </section>
-      )}
-    </div>
-  );
+  flushList(); // flush any remaining ticks
+
+  return <div className="text-gray-800 dark:text-white leading-relaxed space-y-2">{elements}</div>;
 }
