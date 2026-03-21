@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-require_once __DIR__ . '/../Connections/pg_services.php';
-require_once __DIR__ . '/../content/helpers.php';
+require_once dirname(__DIR__) . '/src/utils/pg_services.php';
+require_once dirname(__DIR__) . '/src/utils/helpers.php';
 
 
 $query = "SELECT stockID, make, model, trim, additional, yearPlate, mileage,  price, dateAdded, featured, reserved, sold
@@ -67,7 +67,7 @@ if ($isNumeric) {
 }
 
     // Build image path
-    $row['image'] = "/images/cars/" . $row['stockID'] . "/thumbs/1.webp";
+    $row['image'] = "/images/cars/" . $row['stockID'] . "/1_400.webp";
 
     $cars[] = $row;
 }

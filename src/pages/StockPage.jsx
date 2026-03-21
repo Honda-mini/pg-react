@@ -24,23 +24,21 @@ const start = (page - 1) * carsPerPage;
 const end = start + carsPerPage;
 
 const paginatedCars = cars.slice(start, end);
-  useEffect(() => {
-    fetch("https://pgservices.net/api/getAllVehicles.php")
-      .then((res) => res.json())
-.then((data) => {
-  const cleaned = data.map(car => ({
-    ...car,
-    sold: car.sold == 1,
-    reserved: car.reserved == 1,
-    featured: car.featured == 1
-  }));
-
-  setCars(cleaned);
-  setLoading(false);
-});
-  }, []);
-
-  if (loading) {
+useEffect(() => {
+  fetch("http://localhost:8888/reactPg/api/getAllVehicles.php")
+    .then((res) => res.json())
+    .then((data) => {
+      const cleaned = data.map(car => ({
+        ...car,
+        sold: car.sold == 1,
+        reserved: car.reserved == 1,
+        featured: car.featured == 1
+      }));
+      setCars(cleaned);
+      setLoading(false);
+    })
+    .catch(err => console.error("Fetch error:", err));
+}, []);  if (loading) {
     return (
       <div className="flex justify-center items-center py-20 text-gray-800 dark:text-gray-300">
         Loading stock…
@@ -102,21 +100,14 @@ const paginatedCars = cars.slice(start, end);
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
         
 {paginatedCars.map((car) => {
-  const thumb = getThumbPaths(car.stockID, 1);
+  const images = car.images;
 
   return (
-    <a
-      key={car.stockID}
-      href={`/vehicle/${car.stockID}`}
-      className="
-        group bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg 
-        hover:shadow-2xl transition-shadow h-full flex flex-col
-      "
-    >
+    <a key={car.stockID} href={`/vehicle/${car.stockID}`} className="group ...">
       <div className="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
         <img
-          src={thumb.src}
-          srcSet={thumb.srcSet}
+          src={images.thumb400}
+          srcSet={`${images.thumb400} 1x, ${images.thumb800} 2x`}
           alt={car.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform"
           loading="lazy"

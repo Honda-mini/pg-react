@@ -12,7 +12,7 @@ const VehiclePage: React.FC = () => {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const res = await fetch(`https://pgservices.net/api/car.php?id=${id}`);
+        const res = await fetch(`http://localhost:8888/reactPg/api/car.php?id=${id}`);
         const data = await res.json();
 
         if (data.error) {

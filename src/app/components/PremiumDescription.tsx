@@ -10,7 +10,7 @@ export function PremiumDescription({ raw }: Props) {
   const s = extractSections(cleaned);
 
   return (
-    <div className="space-y-6 text-gray-800 leading-relaxed">
+    <div className="space-y-6 text-gray-800 dark:text-white leading-relaxed">
 
       {/* Intro */}
       {s.intro && (

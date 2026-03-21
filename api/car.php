@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-require_once __DIR__ . '/../Connections/pg_services.php';
-require_once __DIR__ . '/../content/helpers.php';
+require_once dirname(__DIR__) . '/src/utils/pg_services.php';
+require_once dirname(__DIR__) . '/src/utils/helpers.php';
 
 // Validate ID
 $stockID = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -57,37 +57,33 @@ if (!empty($car['mileage'])) {
 // Price stays raw integer — React handles formatting
 $car['price'] = (int)$car['price'];
 
-// Build image array
+// Build WebP-only image array
 $folder = __DIR__ . "/../public/images/cars/" . $stockID . "/";
 $publicPath = "/images/cars/" . $stockID . "/";
 $images = [];
-$extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
-// Use order.json if present
-$orderFile = $folder . "order.json";
-if (file_exists($orderFile)) {
-    $ordered = json_decode(file_get_contents($orderFile), true);
-    if (is_array($ordered)) {
-        foreach ($ordered as $file) {
-            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if (in_array($ext, $extensions) && file_exists($folder . $file)) {
-                $images[] = $publicPath . $file;
-            }
-        }
-    }
-}
+// Only process if folder exists
+if (is_dir($folder)) {
 
-// Fallback: alphabetical scan
-if (empty($images) && is_dir($folder)) {
+    // Scan for full-size WebP images only (1.webp, 2.webp, 3.webp...)
     foreach (scandir($folder) as $file) {
-        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-        if (in_array($ext, $extensions) && is_file($folder . $file)) {
-            $images[] = $publicPath . $file;
+        if (preg_match('/^(\d+)\.webp$/', $file, $match)) {
+            $images[(int)$match[1]] = $publicPath . $file;
         }
     }
+
+    // Sort numerically by image number
+    ksort($images);
+
+    // Re-index to a clean array
+    $images = array_values($images);
 }
 
-// Attach images to response
+// Fallback if no images found
+if (empty($images)) {
+    $images[] = "/../public/images/no-image.svg";
+}
+
 $car['images'] = $images;
 
 // Output JSON
