@@ -53,15 +53,18 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
 
           {/* Primary button */}
+          <a href="/stock">
           <button className="px-8 py-4 bg-white dark:bg-yellow-500 text-blue-600 dark:text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2 group">
             Browse Inventory
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-
+          </a>
           {/* Secondary button */}
-          <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors">
-            Schedule Test Drive
-          </button>
+          <a href="#contact">
+            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors">
+              Schedule Test Drive
+            </button>
+          </a>
 
         </div>
       </div>

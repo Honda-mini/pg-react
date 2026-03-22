@@ -7,6 +7,8 @@ import { Footer } from './components/Footer';
 import StockPage from "../pages/StockPage";
 import HomePage from "../pages/HomePage"; // we will create this
 import VehiclePage from "../pages/VehiclePage"; // we will create this
+import AlloyGatorPage from '../pages/AlloyGator';
+import AboutPage from '../pages/AboutUs';
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/stock" element={<StockPage />} />
             <Route path="/vehicle/:id" element={<VehiclePage />} />
+            <Route path="/alloygator" element={<AlloyGatorPage />} />
+            <Route path="/about" element={<AboutPage />} /> 
           </Routes>
 
           <Footer />

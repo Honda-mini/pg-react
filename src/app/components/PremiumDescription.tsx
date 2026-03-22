@@ -22,7 +22,7 @@ export function PremiumDescription({ raw }: Props) {
   const flushList = () => {
     if (currentList.length > 0) {
       elements.push(
-        <ul className="list-none space-y-1" key={elements.length}>
+        <ul className="list-none space-y-0" key={elements.length}>
           {currentList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}

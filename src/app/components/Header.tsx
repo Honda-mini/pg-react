@@ -11,13 +11,13 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-xl">
         <div className="flex items-center justify-between h-16">
-
+<a href="/" >
 <Logo variant="full" />
-
+</a>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <a href="/stock" className="nav-link">Inventory</a>
-            <a href="#about" className="nav-link">About</a>
+            <a href="/about" className="nav-link">About</a>
             <a href="#contact" className="nav-link">Contact</a>
 
             <button

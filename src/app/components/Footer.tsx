@@ -33,7 +33,7 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-3">
-              <li><a href="#inventory" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Browse Inventory</a></li>
+              <li><a href="/stock" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Browse Inventory</a></li>
               <li><a href="#financing" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Financing Options</a></li>
               <li><a href="#" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Trade-In Value</a></li>
               <li><a href="#" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Warranty Info</a></li>
@@ -76,7 +76,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-gray-800 dark:border-gray-900 text-center text-gray-400">
-          <p>&copy; 2026 AutoCars. All rights reserved. | Privacy Policy | Terms of Service</p>
+          <p>&copy; 2026 PG Services. All rights reserved. | Privacy Policy | Terms of Service</p>
         </div>
       </div>
     </footer>

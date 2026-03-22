@@ -75,9 +75,11 @@ export function InfoSection() {
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
               Whether you’re browsing or searching for something specific, we’re here to help you find the right vehicle, with flexible viewing times and a friendly, personal approach.
             </p>
-            <button className="px-8 py-4 bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 rounded-lg hover:bg-blue-700 dark:hover:bg-yellow-400 transition-colors">
-              Learn More About Us
-            </button>
+            <a href="/about">
+              <button className="px-8 py-4 bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 rounded-lg hover:bg-blue-700 dark:hover:bg-yellow-400 transition-colors">
+                Learn More About Us
+              </button>
+            </a>
           </div>
           
           <div className="relative h-[400px] rounded-xl overflow-hidden shadow-2xl">
