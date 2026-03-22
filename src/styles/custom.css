@@ -209,3 +209,10 @@ html.theme-ready *::after {
     object-fit: cover;
   }
 }
+.alloygator-hero {
+  background-image: url('/assets/ally-hero.svg');
+  background-size: contain; /* or cover depending on layout */
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.05; /* subtle watermark */
+}

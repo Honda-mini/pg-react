@@ -36,7 +36,7 @@ export function Footer() {
               <li><a href="/stock" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Browse Inventory</a></li>
               <li><a href="#financing" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Financing Options</a></li>
               <li><a href="#" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Trade-In Value</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Warranty Info</a></li>
+              <li><a href="/#about" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Warranty Info</a></li>
               <li><a href="#" className="text-gray-400 hover:text-blue-600 dark:hover:text-yellow-500 transition-colors">Schedule Service</a></li>
             </ul>
           </div>
@@ -68,8 +68,11 @@ export function Footer() {
                 <span className="text-gray-400">Phone : 01736 369940<br/>Mobile : 07887653155</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-600 dark:text-yellow-500 flex-shrink-0" />
-                <span className="text-gray-400">paul.pgservices@gmail.com</span>
+                  <Mail className="w-5 h-5 text-blue-600 dark:text-yellow-500 flex-shrink-0" />
+                        <a href="mailto:paul.pgservices@gmail.com?subject=General%20Enquiry">
+                  <span className="text-gray-400">paul.pgservices@gmail.com</span>
+                </a>
+
               </li>
             </ul>
           </div>

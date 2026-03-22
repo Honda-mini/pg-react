@@ -16,6 +16,9 @@ export function Header() {
 </a>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
+            <a href="/AlloyGator" className="nav-link">
+             <img src="/images/ally_light_hq.svg" alt="AlloyGator" className="h-20 w-auto" />
+            </a>
             <a href="/stock" className="nav-link">Inventory</a>
             <a href="/about" className="nav-link">About</a>
             <a href="#contact" className="nav-link">Contact</a>

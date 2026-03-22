@@ -60,8 +60,8 @@ export function Hero() {
           </button>
           </a>
           {/* Secondary button */}
-          <a href="#contact">
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors">
+<a
+  href="mailto:info@pgservices.co.uk?subject=Test%20drive%20Booking&body=Hi%20Paul,%0D%0A%0D%0AI'd%20like%20to%20look%20at%20booking%20a%20test%20drive.%0D%0A%0D%0AThanks!">            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg hover:bg-white/10 transition-colors">
               Schedule Test Drive
             </button>
           </a>

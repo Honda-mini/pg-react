@@ -2,9 +2,17 @@ import React from "react";
 
 export default function AlloyGatorPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 space-y-12">
-
+    <div className="relative overflow-hidden">
+      {/* Hero Background */}
+      <img
+        src="/images/ally-hero.svg"
+        alt=""
+        className="fixed inset-0 w-full h-full object-cover opacity-10 pointer-events-none select-none"
+      />
       {/* Hero */}
+          <div className="max-w-5xl mx-auto px-4 py-10 space-y-12">
+<img src="/images/ally_light_hq.svg" alt="AlloyGator Logo" className="w-full max-w-lg mx-auto mb-6" />
+
       <section className="space-y-4 text-center">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
           AlloyGator Rim Protection
@@ -89,15 +97,16 @@ export default function AlloyGatorPage() {
       {/* CTA */}
       <section className="text-center space-y-4">
         <a
-          href="/contact"
-          className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
-        >
-          Book Installation
-        </a>
+  href="mailto:paul.pgservices@gmail.com?subject=AlloyGator%20Booking&body=Hi%20Paul,%0D%0A%0D%0AI'd%20like%20to%20book%20an%20AlloyGator%20installation.%0D%0A%0D%0AThanks!"
+  className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+>
+  Book Installation
+</a>
         <p className="text-gray-600 dark:text-gray-400">
           Or message us on WhatsApp for quick availability.
         </p>
       </section>
+    </div>
     </div>
   );
 }
