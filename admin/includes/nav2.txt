@@ -1,0 +1,7 @@
+<ul id= "navbar">
+  <li><a href="../index.php">Home</a></li>
+  <li><a href="../stock.php">Stock</a></li>
+  <li><a href="../ebay.php"><img src="../images/ebay.png"></a></li>
+  <li><a href="/alloygator.php"><img src="/images/ally_btn.png"></a></li>
+  <li><a href="../contact.php">Contact Us</a></li>
+  </ul>

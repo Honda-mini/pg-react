@@ -1,0 +1,143 @@
+<?php
+require_once('../src/utils/pg_services.php');
+session_start();
+
+// Redirect if not logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Handle user creation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_user'])) {
+    $newUsername = trim($_POST['new_username']);
+    $newPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+
+    $stmt = $pg_services->prepare("INSERT INTO users (userName, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $newUsername, $newPassword);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: manage_users.php");
+    exit;
+}
+
+// Handle user deletion
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $deleteId = (int)$_GET['delete'];
+    $stmt = $pg_services->prepare("DELETE FROM users WHERE user_id = ?");
+    $stmt->bind_param("i", $deleteId);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: manage_users.php");
+    exit;
+}
+
+// Handle user update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
+    $updateId = (int)$_POST['update_id'];
+    $updateUsername = trim($_POST['update_username']);
+    $updatePassword = $_POST['update_password'];
+
+    if (!empty($updatePassword)) {
+        $hashed = password_hash($updatePassword, PASSWORD_DEFAULT);
+        $stmt = $pg_services->prepare("UPDATE users SET userName = ?, password = ? WHERE user_id = ?");
+        $stmt->bind_param("ssi", $updateUsername, $hashed, $updateId);
+    } else {
+        $stmt = $pg_services->prepare("UPDATE users SET userName = ? WHERE user_id = ?");
+        $stmt->bind_param("si", $updateUsername, $updateId);
+    }
+
+    $stmt->execute();
+    $stmt->close();
+    header("Location: manage_users.php");
+    exit;
+}
+
+// Fetch all users
+$result = $pg_services->query("SELECT user_id, userName FROM users ORDER BY user_id ASC");
+?>
+
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Manage Users - PG Services</title>
+    <link rel ="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
+    <link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="adminGridContainer clearfix">
+    <div id="header">
+        <h1>PG Services</h1>
+        <div id="admin" align="right">ADMIN AREA</div>
+    </div>
+
+<div id="nav">      
+    <a href="index.php" class="btn btn-secondary nav-back">← Back to Admin Menu</a>
+
+    <button id="nav-toggle" aria-label="Open navigation">
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+</button>
+<?php include("includes/nav2.txt"); ?>
+</div>
+    <div id="admin-content">
+        <h1>Manage Users</h1>
+
+        <h2>Create New User</h2>
+        <form method="post">
+            <input type="hidden" name="create_user" value="1">
+            <p><label>Username: <input type="text" name="new_username" required></label></p>
+            <p><label>Password: <input type="password" name="new_password" required></label></p>
+            <p><button type="submit" class="action-btn edit">Create User</button></p>
+            <p class="note">Note: Passwords are stored securely using hashing.</p>
+            <p class="note">Ensure you remember the password as it cannot be retrieved later.</p>
+        </form>
+
+<div id="admin-content">
+<h2>Existing Users</h2>
+<div class="vehicle-card">
+<?php while ($row = $result->fetch_assoc()): ?>
+  <form method="post" class="user-card">
+    <input type="hidden" name="update_user" value="1">
+    <input type="hidden" name="update_id" value="<?= $row['user_id'] ?>">
+    <div><strong>ID:</strong> <?= $row['user_id'] ?></div>
+    <div>
+      <label>
+        <strong>Username:</strong>
+        <input type="text" name="update_username" value="<?= htmlspecialchars($row['userName']) ?>" required>
+      </label>
+    </div>
+    <div>
+      <label>
+        <strong>New Password:</strong>
+        <input type="password" name="update_password" placeholder="New password (optional)">
+      </label>
+    </div>
+    <div class="vehicle-actions">
+      <button type="submit" class="action-btn edit">Update</button>
+      <a href="manage_users.php?delete=<?= $row['user_id'] ?>" class="action-btn delete" onclick="return confirm('Delete this user?');">Delete</a>
+    </div>
+  </form>
+<?php endwhile; ?>
+</div>
+</div>
+    <div id="footer1">Use this page to manage admin users securely.</div>
+    <div id="footer2">
+        <p><a href="scripts/logout.php" class="btn btn-secondary">Log out</a></p>
+              <p style="font-size: 0.6em">©2025 Honda-Mini Designs <a href="http://www.honda-mini.co.uk">Site</a> • <a href="mailto:"martyn@honda-mini.co.uk">Contact</a></p>
+
+    </div>
+</div>
+</div>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  var navList = document.querySelector('#navbar');
+  navList.classList.toggle('open');
+});
+</script>
+</body>
+</html>

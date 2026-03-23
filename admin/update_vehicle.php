@@ -1,0 +1,159 @@
+<?php
+require_once('../Connections/pg_services.php');
+require_once('scripts/auth_session.php');
+
+$success = false;
+$error = '';
+$stockID = isset($_GET['stockID']) ? (int)$_GET['stockID'] : 0;
+$vehicle = [];
+
+// Connect
+$mysqli = new mysqli($hostname_pg_services, $username_pg_services, $password_pg_services, $database_pg_services);
+if ($mysqli->connect_error) {
+    die("DB connection failed: " . $mysqli->connect_error);
+}
+
+// Fetch current data
+if ($stockID) {
+    $stmt = $mysqli->prepare("SELECT * FROM stock WHERE stockID = ?");
+    $stmt->bind_param("i",  $stockID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $vehicle = $result->fetch_assoc();
+    $stmt->close();
+    if (!$vehicle) {
+        $error = "✖ Vehicle not found or invalid stock ID.";
+    }
+}
+
+// Handle update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_update']) && $_POST['MM_update'] === 'form1') {
+    // Assign POST values to variables
+    $make = $_POST['make'];
+    $model = $_POST['model'];
+    $trim = $_POST['trim'];
+    $additional = $_POST['additional'];
+    $yearPlate = $_POST['yearPlate'];
+    $regNumber = $_POST['regNumber'];
+    $fuelType = $_POST['fuelType'];
+    $engineSize = (int)$_POST['engineSize'];
+    $mileage = (int)$_POST['mileage'];
+    $transmission = $_POST['transmission'];
+    $bodyType = $_POST['bodyType'];
+    $powerBhp = (int)$_POST['powerBhp'];
+    $doorsNo = (int)$_POST['doorsNo'];
+    $colour = $_POST['colour'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+
+    // Prepare the SQL statement
+    $sql = "UPDATE stock SET make=?, model=?, trim=?, additional=?, yearPlate=?, regNumber=?, fuelType=?, engineSize=?, mileage=?, transmission=?, bodyType=?, powerBhp=?, doorsNo=?, colour=?, `description`=?, price=? WHERE stockID=?";
+    $stmt = $mysqli->prepare($sql);
+    if (!$stmt) {
+        $error = "Prepare failed: " . $mysqli->error;
+    } else {
+        // Bind parameters to the prepared statement
+        $stmt->bind_param(
+            "sssssssiissiisssi",
+            $make, $model, $trim, $additional, $yearPlate,
+            $regNumber, $fuelType, $engineSize, $mileage,
+            $transmission, $bodyType, $powerBhp, $doorsNo,
+            $colour, $description, $price, $stockID
+        );
+
+        // Execute the statement
+        if ($stmt->execute()) {
+              // Set the success message and redirect
+              $_SESSION['uploadMessage'] = "✔ Vehicle #$stockID successfully updated!";
+              $_SESSION['uploadMessageType'] = "success";
+                            header("Location: manage_stock.php");
+              exit;
+
+          } else {
+              $error = "update failed: " . $stmt->error;
+          }
+        $stmt->close();
+    }
+}
+$mysqli->close();
+?>
+
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Update Vehicle</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../scripts/boilerplate.css" rel="stylesheet" type="text/css">
+    <link href="../css/pgLayout.css?v=<?=filemtime('../css/pgLayout.css')?>" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="adminGridContainer clearfix">
+    <div id="header">
+        <?php include("../content/header2.txt"); ?>
+        <div id="admin" align="right">ADMIN AREA</div> 
+    </div>
+
+<div id="nav">      
+    <a href="index.php" class="btn btn-secondary nav-back">← Back to Admin Menu</a>
+
+    <button id="nav-toggle" aria-label="Open navigation">
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+</button>
+<?php include("../content/nav2.txt"); ?>
+</div>
+
+    <div id="admin-content">
+        <h1>Update Vehicle</h1>
+        <a href="index.php">Admin Menu</a>
+
+        <?php if ($error): ?>
+            <div style="color: red;">✖ <?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+<?php if ($vehicle): ?>
+        <!-- form fields -->
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?stockID=' .  $stockID ?>" method="POST">
+            <p><label>Make:</label><input type="text" name="make" value="<?= htmlspecialchars($vehicle['make'] ?? '') ?>" required></p>
+            <p><label>Model:</label><input type="text" name="model" value="<?= htmlspecialchars($vehicle['model'] ?? '') ?>" required></p>
+            <p><label>Trim:</label><input type="text" name="trim" value="<?= htmlspecialchars($vehicle['trim'] ?? '') ?>"></p>
+            <p><label>Extra Info:</label><textarea name="additional" rows="3"><?= htmlspecialchars($vehicle['additional'] ?? '') ?></textarea></p>
+            <p><label>Year/Plate:</label><input type="text" name="yearPlate" value="<?= htmlspecialchars($vehicle['yearPlate'] ?? '') ?>"></p>
+            <p><label>Registration Number:</label><input type="text" name="regNumber" value="<?= htmlspecialchars($vehicle['regNumber'] ?? '') ?>"></p>
+            <p><label>Fuel Type:</label><input type="text" name="fuelType" value="<?= htmlspecialchars($vehicle['fuelType'] ?? '') ?>"></p>
+            <p><label>Engine Size:</label><input type="text" name="engineSize" value="<?= htmlspecialchars($vehicle['engineSize'] ?? '') ?>"></p>
+            <p><label>Mileage:</label><input type="text" name="mileage" value="<?= htmlspecialchars($vehicle['mileage'] ?? '') ?>"></p>
+            <p><label>Transmission:</label><input type="text" name="transmission" value="<?= htmlspecialchars($vehicle['transmission'] ?? '') ?>"></p>
+            <p><label>Body Type:</label><input type="text" name="bodyType" value="<?= htmlspecialchars($vehicle['bodyType'] ?? '') ?>"></p>
+            <p><label>Power (BHP):</label><input type="text" name="powerBhp" value="<?= htmlspecialchars($vehicle['powerBhp'] ?? '') ?>"></p>
+            <p><label>Doors No.:</label><input type="text" name="doorsNo" value="<?= htmlspecialchars($vehicle['doorsNo'] ?? '') ?>"></p>
+            <p><label>Colour:</label><input type="text" name="colour" value="<?= htmlspecialchars($vehicle['colour'] ?? '') ?>"></p>
+            <p><label>Description:</label><textarea name="description" rows="5"><?= htmlspecialchars($vehicle['description'] ?? '') ?></textarea></p>
+            <p><label>Price:</label><input type="text" name="price" value="<?= htmlspecialchars($vehicle['price'] ?? '') ?>"></p>
+
+            <input type="hidden" name="MM_update" value="form1">
+            <p><input type="submit" value="Update Vehicle"></p>
+        </form>
+        <?php endif; ?>
+    </div>
+
+    <div id="footer1">
+        <p>VIEWING BY APPOINTMENT , ALL VEHICLES VALETED WITH AUTOGLYM PRODUCTS TO A VERY HIGH STANDARD</p>
+    </div>
+    <div id="footer2">
+        <p><a href="scripts/logout.php" class="btn btn-secondary">Log out</a></p>
+              <p style="font-size: 0.6em">©2025 Honda-Mini Designs <a href="http://www.honda-mini.co.uk">Site</a> • <a href="mailto:"martyn@honda-mini.co.uk">Contact</a></p>
+
+    </div>
+</div>
+<script>
+document.getElementById('nav-toggle').addEventListener('click', function() {
+  var navList = document.querySelector('#navbar');
+  navList.classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Wrench } from 'lucide-react';
 import Logo from '../components/Logo';
 
 
@@ -78,8 +78,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-800 dark:border-gray-900 text-center text-gray-400">
-          <p>&copy; 2026 PG Services. All rights reserved. | Privacy Policy | Terms of Service</p>
+        <div className="pt-8 border-t border-gray-800 dark:border-gray-900 text-center text-gray-400 relative">
+          <p>&copy; 2026 PG Services. All rights reserved. | Privacy Policy | Terms of Service           
+            <a href="http://localhost:8888/reactPg/admin/" className="admin-icon" aria-label="Admin">
+    <Wrench size={20} />
+  </a>
+</p>
         </div>
       </div>
     </footer>

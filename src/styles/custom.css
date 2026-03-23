@@ -216,3 +216,14 @@ html.theme-ready *::after {
   background-position: center;
   opacity: 0.05; /* subtle watermark */
 }
+.admin-icon {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 0;
+  opacity: 0.5;
+  padding: 6px; /* improves tap target */
+}
+
+.admin-icon:hover {
+  opacity: 0.9;
+}
