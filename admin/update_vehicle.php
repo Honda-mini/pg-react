@@ -1,5 +1,5 @@
 <?php
-require_once('../Connections/pg_services.php');
+require_once('../src/utils/pg_services.php');
 require_once('scripts/auth_session.php');
 
 $success = false;
@@ -85,13 +85,13 @@ $mysqli->close();
     <meta charset="UTF-8">
     <title>Update Vehicle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../scripts/boilerplate.css" rel="stylesheet" type="text/css">
-    <link href="../css/pgLayout.css?v=<?=filemtime('../css/pgLayout.css')?>" rel="stylesheet" type="text/css">
+    <link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
+    <link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="adminGridContainer clearfix">
     <div id="header">
-        <?php include("../content/header2.txt"); ?>
+        <?php include("includes/header2.txt"); ?>
         <div id="admin" align="right">ADMIN AREA</div> 
     </div>
 
@@ -103,7 +103,7 @@ $mysqli->close();
   <span class="hamburger"></span>
   <span class="hamburger"></span>
 </button>
-<?php include("../content/nav2.txt"); ?>
+<?php include("includes/nav2.txt"); ?>
 </div>
 
     <div id="admin-content">

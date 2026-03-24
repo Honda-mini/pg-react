@@ -90,7 +90,7 @@ $imageCount = 0;
 if (is_dir($imageDir)) {
     $files = array_diff(scandir($imageDir), ['.', '..', 'thumbs', '.DS_Store', 'order.json']);
     foreach ($files as $file) {
-        if (is_file($imageDir . $file) && preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
+        if (is_file($imageDir . $file) && preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
             $imageCount++;
         }
     }
