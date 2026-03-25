@@ -1,0 +1,586 @@
+/* ----------------------------------------------------------
+   PG Services Admin Panel — Unified Stylesheet
+   Matches Image Manager Aesthetic (Bootstrap‑influenced)
+----------------------------------------------------------- */
+
+/* Base */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #f5f5f7;
+    color: #222;
+}
+
+/* ----------------------------------------------------------
+   Header + Navigation
+----------------------------------------------------------- */
+
+.admin-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 12px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.admin-header-inner {
+    width: 95%;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.admin-nav a {
+    color: #ddd;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 0.95rem;
+    transition: 0.2s ease;
+}
+
+.admin-nav a:hover {
+    color: #fff;
+}
+
+.admin-nav .logout {
+    color: #ff6b6b;
+}
+
+.admin-nav .logout:hover {
+    color: #ff8a8a;
+}
+
+/* ----------------------------------------------------------
+   Main Container (matches Bootstrap card spacing)
+----------------------------------------------------------- */
+
+.admin-container {
+    width: 95%;
+    max-width: 1300px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ----------------------------------------------------------
+   Headings
+----------------------------------------------------------- */
+
+h1, h2, h3 {
+    margin-top: 0;
+    font-weight: 600;
+    color: #222;
+}
+
+/* ----------------------------------------------------------
+   Buttons (Bootstrap‑like)
+----------------------------------------------------------- */
+
+.button,
+button,
+input[type="submit"] {
+    display: inline-block;
+    background: #0d6efd;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+    background: #0b5ed7;
+}
+
+.button-outline {
+    background: transparent;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+}
+
+.button-outline:hover {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.button-danger {
+    background: #dc3545;
+}
+
+.button-danger:hover {
+    background: #bb2d3b;
+}
+
+/* ----------------------------------------------------------
+   Forms (Bootstrap‑inspired)
+----------------------------------------------------------- */
+
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    font-size: 0.95rem;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+/* ----------------------------------------------------------
+   Tables (Bootstrap‑like)
+----------------------------------------------------------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+}
+
+table th {
+    background: #f0f0f0;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+}
+
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+table tr:hover {
+    background: #fafafa;
+}
+
+/* ----------------------------------------------------------
+   Footer
+----------------------------------------------------------- */
+
+.admin-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #666;
+    font-size: 0.85rem;
+}
+/* ----------------------------------------------------------
+   Stock Manager — Card Grid Layout (2026 Upgrade)
+----------------------------------------------------------- */
+
+/* Filter Bar */
+.admin-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0 25px;
+}
+
+.admin-input,
+.admin-select {
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    font-size: 0.95rem;
+    background: #fff;
+}
+
+/* Header Row (Title + Add Button) */
+.admin-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Vehicle Grid */
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* Vehicle Card */
+.vehicle-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vehicle-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Thumbnail */
+.vehicle-thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: #e5e5e5;
+}
+
+.vehicle-thumb.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Card Body */
+.vehicle-card-body {
+    padding: 15px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Header Row Inside Card */
+.vehicle-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Price Badge (theme‑aware) */
+.vehicle-price-badge {
+    background: #222;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+
+
+body.dark-mode .vehicle-price-badge {
+    background: #fff;
+    color: #222;
+}
+
+/* Vehicle Info */
+.vehicle-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.vehicle-reg {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Action Buttons */
+.vehicle-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.admin-btn.small {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 0.375rem;
+}
+
+.admin-btn.danger {
+    background: #dc3545;
+    color: #fff;
+}
+
+.admin-btn.danger:hover {
+    background: #bb2d3b;
+}
+
+/* Floating Add Vehicle Button */
+.fab-add-vehicle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 2rem;
+    line-height: 55px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: 0.2s ease;
+    z-index: 999;
+}
+
+.fab-add-vehicle:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+}
+
+.vehicle-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.vehicle-header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.vehicle-id {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Toggle Switch */
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle input {
+    display: none;
+}
+
+.toggle .slider {
+    width: 42px;
+    height: 22px;
+    background: #ccc;
+    border-radius: 22px;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.toggle .slider::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: 0.2s ease;
+}
+
+.toggle input:checked + .slider {
+    background: #0d6efd;
+}
+
+.toggle input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+.toggle-label {
+    font-size: 0.95rem;
+    color: #222;
+}
+
+/* ----------------------------------------------------------
+   IMAGE MANAGER — unified admin styles
+---------------------------------------------------------- */
+
+/* Grid layout */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+/* Image card */
+.image-card {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.image-card:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.image-card.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
+}
+
+/* Thumbnail */
+.image-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Filename area */
+.image-card .card-body {
+    padding: 0.75rem 0.9rem;
+}
+
+.image-card .filename {
+    font-size: 0.82rem;
+    color: #555;
+    word-break: break-all;
+}
+
+/* Primary badge (pill) */
+.primary-badge {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    z-index: 3;
+    background: #0d6efd;
+    color: #fff;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+/* Badge group (stacks vertically) */
+.status-badge-group {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+/* Base badge style (matches PRIMARY) */
+.status-badge {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    display: inline-block;
+    opacity: 1 !important;
+    visibility: visible !important ;
+}
+
+/* Colour variants */
+.status-featured { background: #d4a017; }   /* gold/amber */
+.status-reserved { background: #ff7a00; }   /* orange */
+.status-sold     { background: #dc3545; }   /* red */
+
+/* Footer buttons */
+.card-footer-btns {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0.75rem 0.8rem;
+    border-top: 1px solid #eee;
+}
+
+/* Small admin buttons */
+.admin-btn.small {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.78rem;
+    border-radius: 0.4rem;
+}
+
+.user-card input {
+    width: 100%;
+}
+
+.user-card .form-group {
+    margin-bottom: 0.6rem;
+}
+.vehicle-image-wrapper {
+    position: relative;
+}
+
+.vehicle-status-row {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #eee;
+}
+
+/* Compact, inline status row */
+.status-inline-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* tighter */
+    padding: 0.2rem 0; /* reduces vertical space */
+    font-size: 0.8rem; /* matches Edit/Delete size */
+}
+
+/* Two inline groups */
+.status-col-left,
+.status-col-right {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* tighter spacing between toggles */
+}
+
+/* Make toggle labels match card UI text */
+.inline-toggle .toggle-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* Save button aligned properly */
+.status-save-btn {
+    margin: 0; /* remove vertical offset */
+    padding: 0.25rem 0.6rem; /* smaller button to match UI */
+    font-size: 0.75rem;
+}

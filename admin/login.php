@@ -1,6 +1,6 @@
 <?php
-require_once('../src/utils/pg_services.php');
 
+require_once('../src/utils/pg_services.php');
 session_start();
 
 // Check DB connection
@@ -15,6 +15,7 @@ if (isset($_GET['accesscheck'])) {
 }
 
 // Handle login
+// Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $loginUsername = $_POST['username'];
     $password = $_POST['password'];
@@ -24,16 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $stmt->store_result();
 
-    // Check if user exists
     if ($stmt->num_rows === 1) {
         $stmt->bind_result($fetchedUser, $hashedPassword);
         $stmt->fetch();
 
-        // Use password_verify for hashed passwords
-        if (password_verify($password, $hashedPassword)) {
+       if (is_string($hashedPassword) && password_verify($password, $hashedPassword)) {
+
             $_SESSION['username'] = $fetchedUser;
             $_SESSION['MM_Username'] = $fetchedUser;
-            $_SESSION['MM_UserGroup'] = ""; // Optional: set based on DB role if used
+            $_SESSION['MM_UserGroup'] = "";
+            $_SESSION['admin_logged_in'] = true; // this is the key flag
 
             $redirect = $_SESSION['PrevUrl'] ?? "index.php";
             header("Location: $redirect");
@@ -41,75 +42,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Failed login
     header("Location: login.php?error=1");
     exit;
 }
 ?>
-
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Login - PG Services</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
-    <link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
+    <title>Admin Login – PG Services</title>
+    <link rel="stylesheet" href="includes/admin.css">
 </head>
 <body>
-<div class="adminGridContainer clearfix">
-    <div id="header">
-        <h1>PG Services</h1>
-        <div id="admin" align="right"><p>ADMIN </p>
-        </div>
-    </div>
 
-<div id="nav">      
+<div class="login-wrapper">
+    <div class="login-card">
+        <h1>Admin Login</h1>
 
-    <button id="nav-toggle" aria-label="Open navigation">
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-</button>
-<?php include("includes/nav2.txt"); ?>
-</div>
-
-    <div id="admin-content">
-        <h1>Authorized Users Only</h1>
-        <form action="<?php echo htmlspecialchars($loginFormAction); ?>" method="POST">
-            <p>
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username" required />
-            </p>
-            <p>
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required />
-            </p>
-            <p>
-                <button type="submit" class="btn btn-primary">Log In</button>
-            </p>
-        </form>
         <?php if (isset($_GET['error'])): ?>
-            <p style="color:red;">Invalid username or password. Please try again.</p>
+            <p style="color:#d9534f; text-align:center; margin-bottom:15px;">
+                Invalid username or password.
+            </p>
         <?php endif; ?>
-        <div id="warning">
-            <p align="center">You have been directed here as you tried to access the admin area without proper authorization.</p>
-            <p align="center">To access the admin area, please log in with your username and password.</p>
-            <p align="center">If you do not have an account, please contact the system administrator.</p>
-            <p align="center">For security reasons, please do not share your login credentials with anyone.</p>
-            <p align="center">Thank you for your cooperation.</p>
-        </div>
-    </div>
 
-    <div id="footer2"><button class="btn btn-secondary" onclick="history.go(-1);">Back</button></div>
+        <form action="<?php echo htmlspecialchars($loginFormAction); ?>" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <button type="submit" class="button">Log In</button>
+        </form>
+
+        <p style="text-align:center; margin-top:20px; color:#666; font-size:0.85rem;">
+            Authorized users only.
+        </p>
+    </div>
 </div>
-<script>
-document.getElementById('nav-toggle').addEventListener('click', function() {
-  var navList = document.querySelector('#navbar');
-  navList.classList.toggle('open');
-});
-</script>
+
 </body>
 </html>

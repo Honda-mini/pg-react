@@ -1,3 +1,4 @@
+<?php include("includes/_header.php"); ?>
 <?php
 require_once('../src/utils/pg_services.php');
 require_once('scripts/auth_session.php');
@@ -28,132 +29,222 @@ if ($stockID) {
 
 // Handle update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_update']) && $_POST['MM_update'] === 'form1') {
-    // Assign POST values to variables
-    $make = $_POST['make'];
-    $model = $_POST['model'];
-    $trim = $_POST['trim'];
-    $additional = $_POST['additional'];
-    $yearPlate = $_POST['yearPlate'];
-    $regNumber = $_POST['regNumber'];
-    $fuelType = $_POST['fuelType'];
-    $engineSize = (int)$_POST['engineSize'];
-    $mileage = (int)$_POST['mileage'];
-    $transmission = $_POST['transmission'];
-    $bodyType = $_POST['bodyType'];
-    $powerBhp = (int)$_POST['powerBhp'];
-    $doorsNo = (int)$_POST['doorsNo'];
-    $colour = $_POST['colour'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
 
-    // Prepare the SQL statement
-    $sql = "UPDATE stock SET make=?, model=?, trim=?, additional=?, yearPlate=?, regNumber=?, fuelType=?, engineSize=?, mileage=?, transmission=?, bodyType=?, powerBhp=?, doorsNo=?, colour=?, `description`=?, price=? WHERE stockID=?";
+    $make         = $_POST['make'];
+    $model        = $_POST['model'];
+    $trim         = $_POST['trim'];
+    $additional   = $_POST['additional'];
+    $yearPlate    = $_POST['yearPlate'];
+    $regNumber    = $_POST['regNumber'];
+    $fuelType     = $_POST['fuelType'];
+    $engineSize   = (int)$_POST['engineSize'];
+    $mileage      = (int)$_POST['mileage'];
+    $transmission = $_POST['transmission'];
+    $bodyType     = $_POST['bodyType'];
+    $powerBhp     = (int)$_POST['powerBhp'];
+    $doorsNo      = (int)$_POST['doorsNo'];
+    $colour       = $_POST['colour'];
+    $description  = $_POST['description'];
+    $price        = $_POST['price'];
+
+    $sql = "UPDATE stock SET make=?, model=?, trim=?, additional=?, yearPlate=?, regNumber=?, fuelType=?, engineSize=?, mileage=?, transmission=?, bodyType=?, powerBhp=?, doorsNo=?, colour=?, description=?, price=?, featured=?, reserved=?, sold=? WHERE stockID=?";
     $stmt = $mysqli->prepare($sql);
+    $featured = isset($_POST['featured']) ? 1 : 0;
+    $reserved = isset($_POST['reserved']) ? 1 : 0;
+    $sold     = isset($_POST['sold']) ? 1 : 0;
+
+// enforce exclusivity
+    if ($reserved && $sold) {
+        $reserved = 0;
+}
+
+
     if (!$stmt) {
         $error = "Prepare failed: " . $mysqli->error;
     } else {
-        // Bind parameters to the prepared statement
         $stmt->bind_param(
-            "sssssssiissiisssi",
-            $make, $model, $trim, $additional, $yearPlate,
-            $regNumber, $fuelType, $engineSize, $mileage,
-            $transmission, $bodyType, $powerBhp, $doorsNo,
-            $colour, $description, $price, $stockID
-        );
+    "sssssssiissiisssiiii",
+    $make, $model, $trim, $additional, $yearPlate,
+    $regNumber, $fuelType, $engineSize, $mileage,
+    $transmission, $bodyType, $powerBhp, $doorsNo,
+    $colour, $description, $price,
+    $featured, $reserved, $sold,
+    $stockID
+);
 
-        // Execute the statement
+
         if ($stmt->execute()) {
-              // Set the success message and redirect
-              $_SESSION['uploadMessage'] = "✔ Vehicle #$stockID successfully updated!";
-              $_SESSION['uploadMessageType'] = "success";
-                            header("Location: manage_stock.php");
-              exit;
-
-          } else {
-              $error = "update failed: " . $stmt->error;
-          }
+            $_SESSION['uploadMessage'] = "✔ Vehicle #$stockID successfully updated!";
+            $_SESSION['uploadMessageType'] = "success";
+            header("Location: manage_stock.php");
+            exit;
+        } else {
+            $error = "Update failed: " . $stmt->error;
+        }
         $stmt->close();
     }
 }
+
 $mysqli->close();
 ?>
 
-<!doctype html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <title>Update Vehicle</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
-    <link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
-</head>
-<body>
-<div class="adminGridContainer clearfix">
-    <div id="header">
-        <?php include("includes/header2.txt"); ?>
-        <div id="admin" align="right">ADMIN AREA</div> 
-    </div>
 
-<div id="nav">      
-    <a href="index.php" class="btn btn-secondary nav-back">← Back to Admin Menu</a>
 
-    <button id="nav-toggle" aria-label="Open navigation">
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-</button>
-<?php include("includes/nav2.txt"); ?>
+    <h1 class="admin-title">Update Vehicle #<?= htmlspecialchars($stockID) ?></h1>
+
+    <?php if ($error): ?>
+        <div class="admin-alert error"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+
+    <?php if ($vehicle): ?>
+
+    <div class="admin-card">
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?stockID=' . $stockID ?>" method="POST" class="admin-form">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Make</label>
+                    <input type="text" name="make" value="<?= htmlspecialchars($vehicle['make']) ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Model</label>
+                    <input type="text" name="model" value="<?= htmlspecialchars($vehicle['model']) ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Trim</label>
+                    <input type="text" name="trim" value="<?= htmlspecialchars($vehicle['trim']) ?>">
+                </div>
+
+                <div class="form-group full">
+                    <label>Extra Info</label>
+                    <textarea name="additional" rows="3"><?= htmlspecialchars($vehicle['additional']) ?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Year / Plate</label>
+                    <input type="text" name="yearPlate" value="<?= htmlspecialchars($vehicle['yearPlate']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Registration Number</label>
+                    <input type="text" name="regNumber" value="<?= htmlspecialchars($vehicle['regNumber']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Fuel Type</label>
+                    <input type="text" name="fuelType" value="<?= htmlspecialchars($vehicle['fuelType']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Engine Size</label>
+                    <input type="text" name="engineSize" value="<?= htmlspecialchars($vehicle['engineSize']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Mileage</label>
+                    <input type="text" name="mileage" value="<?= htmlspecialchars($vehicle['mileage']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Transmission</label>
+                    <input type="text" name="transmission" value="<?= htmlspecialchars($vehicle['transmission']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Body Type</label>
+                    <input type="text" name="bodyType" value="<?= htmlspecialchars($vehicle['bodyType']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Power (BHP)</label>
+                    <input type="text" name="powerBhp" value="<?= htmlspecialchars($vehicle['powerBhp']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Doors</label>
+                    <input type="text" name="doorsNo" value="<?= htmlspecialchars($vehicle['doorsNo']) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Colour</label>
+                    <input type="text" name="colour" value="<?= htmlspecialchars($vehicle['colour']) ?>">
+                </div>
+
+                <div class="form-group full">
+                    <label>Description</label>
+                    <textarea name="description" rows="5"><?= htmlspecialchars($vehicle['description']) ?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Price (£)</label>
+                    <input type="text" name="price" value="<?= htmlspecialchars($vehicle['price']) ?>">
+                </div>
+
+            </div>
+        <div class="status-form">
+        <!-- Featured toggle -->
+        <label class="toggle">
+            <input type="checkbox" name="featured" value="1" <?= $vehicle['featured'] ? 'checked' : '' ?>>
+            <span class="slider"></span>
+            <span class="toggle-label">Featured</span>
+        </label>
+
+        <!-- Reserved toggle -->
+        <label class="toggle">
+            <input type="checkbox" class="reserved-toggle" name="reserved" value="1" <?= $vehicle['reserved'] ? 'checked' : '' ?>>
+            <span class="slider"></span>
+            <span class="toggle-label">Reserved</span>
+        </label>
+
+        <!-- Sold toggle -->
+        <label class="toggle">
+            <input type="checkbox" class="sold-toggle" name="sold" value="1" <?= $vehicle['sold'] ? 'checked' : '' ?>>
+            <span class="slider"></span>
+            <span class="toggle-label">Sold</span>
+        </label>
+
+        </div>
 </div>
-
-    <div id="admin-content">
-        <h1>Update Vehicle</h1>
-        <a href="index.php">Admin Menu</a>
-
-        <?php if ($error): ?>
-            <div style="color: red;">✖ <?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-<?php if ($vehicle): ?>
-        <!-- form fields -->
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?stockID=' .  $stockID ?>" method="POST">
-            <p><label>Make:</label><input type="text" name="make" value="<?= htmlspecialchars($vehicle['make'] ?? '') ?>" required></p>
-            <p><label>Model:</label><input type="text" name="model" value="<?= htmlspecialchars($vehicle['model'] ?? '') ?>" required></p>
-            <p><label>Trim:</label><input type="text" name="trim" value="<?= htmlspecialchars($vehicle['trim'] ?? '') ?>"></p>
-            <p><label>Extra Info:</label><textarea name="additional" rows="3"><?= htmlspecialchars($vehicle['additional'] ?? '') ?></textarea></p>
-            <p><label>Year/Plate:</label><input type="text" name="yearPlate" value="<?= htmlspecialchars($vehicle['yearPlate'] ?? '') ?>"></p>
-            <p><label>Registration Number:</label><input type="text" name="regNumber" value="<?= htmlspecialchars($vehicle['regNumber'] ?? '') ?>"></p>
-            <p><label>Fuel Type:</label><input type="text" name="fuelType" value="<?= htmlspecialchars($vehicle['fuelType'] ?? '') ?>"></p>
-            <p><label>Engine Size:</label><input type="text" name="engineSize" value="<?= htmlspecialchars($vehicle['engineSize'] ?? '') ?>"></p>
-            <p><label>Mileage:</label><input type="text" name="mileage" value="<?= htmlspecialchars($vehicle['mileage'] ?? '') ?>"></p>
-            <p><label>Transmission:</label><input type="text" name="transmission" value="<?= htmlspecialchars($vehicle['transmission'] ?? '') ?>"></p>
-            <p><label>Body Type:</label><input type="text" name="bodyType" value="<?= htmlspecialchars($vehicle['bodyType'] ?? '') ?>"></p>
-            <p><label>Power (BHP):</label><input type="text" name="powerBhp" value="<?= htmlspecialchars($vehicle['powerBhp'] ?? '') ?>"></p>
-            <p><label>Doors No.:</label><input type="text" name="doorsNo" value="<?= htmlspecialchars($vehicle['doorsNo'] ?? '') ?>"></p>
-            <p><label>Colour:</label><input type="text" name="colour" value="<?= htmlspecialchars($vehicle['colour'] ?? '') ?>"></p>
-            <p><label>Description:</label><textarea name="description" rows="5"><?= htmlspecialchars($vehicle['description'] ?? '') ?></textarea></p>
-            <p><label>Price:</label><input type="text" name="price" value="<?= htmlspecialchars($vehicle['price'] ?? '') ?>"></p>
 
             <input type="hidden" name="MM_update" value="form1">
-            <p><input type="submit" value="Update Vehicle"></p>
+
+            <div class="form-actions">
+                <button type="submit" class="admin-btn primary">Update Vehicle</button>
+                <a href="manage_stock.php" class="admin-btn">Cancel</a>
+            </div>
+
         </form>
-        <?php endif; ?>
     </div>
 
-    <div id="footer1">
-        <p>VIEWING BY APPOINTMENT , ALL VEHICLES VALETED WITH AUTOGLYM PRODUCTS TO A VERY HIGH STANDARD</p>
-    </div>
-    <div id="footer2">
-        <p><a href="scripts/logout.php" class="btn btn-secondary">Log out</a></p>
-              <p style="font-size: 0.6em">©2025 Honda-Mini Designs <a href="http://www.honda-mini.co.uk">Site</a> • <a href="mailto:"martyn@honda-mini.co.uk">Contact</a></p>
+    <?php endif; ?>
 
-    </div>
 </div>
 <script>
-document.getElementById('nav-toggle').addEventListener('click', function() {
-  var navList = document.querySelector('#navbar');
-  navList.classList.toggle('open');
+document.addEventListener("DOMContentLoaded", () => {
+    const reserved = document.querySelectorAll(".reserved-toggle");
+    const sold = document.querySelectorAll(".sold-toggle");
+
+    reserved.forEach(r => {
+        r.addEventListener("change", () => {
+            if (r.checked) {
+                // turn off sold
+                r.closest(".status-form").querySelector(".sold-toggle").checked = false;
+            }
+        });
+    });
+
+    sold.forEach(s => {
+        s.addEventListener("change", () => {
+            if (s.checked) {
+                // turn off reserved
+                s.closest(".status-form").querySelector(".reserved-toggle").checked = false;
+            }
+        });
+    });
 });
 </script>
 
-</body>
-</html>
+<?php include("includes/_footer.php"); ?>

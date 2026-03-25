@@ -1,81 +1,25 @@
-<?php
-require_once('scripts/auth_session.php');
-?>
+<?php include 'includes/_header.php'; ?>
 
+<h1>Dashboard</h1>
+<p class="text-muted">Welcome to the PG Services admin panel. Choose an action below.</p>
 
-<!doctype html>
-<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PG Services Admin Menu</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
-<link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
-<!-- 
-To learn more about the conditional comments around the html tags at the top of the file:
-paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
+<div class="dashboard-grid">
 
-Do the following if you're using your customized build of modernizr (http://www.modernizr.com/):
-* insert the link to your js here
-* remove the link below to the html5shiv
-* add the "no-js" class to the html tags at the top
-* you can also remove the link to respond.min.js if you included the MQ Polyfill in your modernizr build 
--->
-<!--[if lt IE 9]>
-<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="styles/respond.min.js?v=<?=filemtime('../scripts/respond.min.js')?>"></script>
-</head><!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
-<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="">
-<!--<![endif]-->
+    <a href="manage_stock.php" class="dashboard-card">
+        <h2>Manage Stock</h2>
+        <p>View, edit, and update all vehicles currently in stock.</p>
+    </a>
 
-<body>
-<div class="adminGridContainer clearfix">
-  <div id="header">
-    <?php include("includes/header2.txt"); ?>
-    <div id="admin" align=right>ADMIN AREA</div> </div>
-  
-<div id="nav">      
+    <a href="add_vehicle.php" class="dashboard-card">
+        <h2>Add Vehicle</h2>
+        <p>Add a new vehicle to the PG Services inventory.</p>
+    </a>
 
-    <button id="nav-toggle" aria-label="Open navigation">
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-</button>
-<?php include("includes/nav2.txt"); ?>
+    <a href="manage_users.php" class="dashboard-card">
+        <h2>Manage Users</h2>
+        <p>View, add, or remove admin users.</p>
+    </a>
+
 </div>
-  <div id="admin-content">
-<!-- Replace your current menu block with this -->
-<h1 class="mb-4">Admin Menu</h1>
-<ul class="list-group admin-menu mb-4">
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a href="manage_users.php" class="text-decoration-none fw-bold">User Management</a>
-    <span class="badge bg-success">NEW</span>
-  </li>
-  <li class="list-group-item"><a href="add_vehicle.php" class="text-decoration-none">Add New Vehicle</a></li>
-  <li class="list-group-item"><a href="manage_stock.php" class="text-decoration-none">Manage Stock</a></li>
-  <li class="list-group-item"><a href="../stock.php" class="text-decoration-none">View Stock</a></li>
-  <li class="list-group-item"><a href="scripts/logout.php" class="text-decoration-none text-danger">Log out</a></li>
-</ul>  </div>  
-  <div id="footer1">
-    <p>VIEWING BY APPOINTMENT , ALL VEHICLES VALETED WITH AUTOGLYM PRODUCTS TO A VERY HIGH STANDARD, CARDS ACCEPTED, PX POSS</p>
-    <p>Phone : 01736 369940 or Mobile : 07887653155</p>
-  </div>
-  <div id="footer2"><div style="background-color:;">
-      <p><a href="scripts/logout.php" class="btn btn-secondary">Log out</a></p>
-      <p style="font-size: 0.6em">©2025 Honda-Mini Designs <a href="http://www.honda-mini.co.uk">Site</a> • <a href="mailto:"martyn@honda-mini.co.uk">Contact</a></p>
-    </div>
-    </div>
-</div>
-<script>
-document.getElementById('nav-toggle').addEventListener('click', function() {
-  var navList = document.querySelector('#navbar');
-  navList.classList.toggle('open');
-});
-</script>
 
-</body>
-</html>
+<?php include 'includes/_footer.php'; ?>

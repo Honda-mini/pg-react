@@ -1,10 +1,10 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once('../src/utils/pg_services.php');
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_insert']) && $_POST['MM_insert'] === 'form1') {
 
     // Collect form fields
@@ -25,26 +25,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_insert']) && $_POS
     $description  = $_POST['description'];
     $price        = $_POST['price'];
 
-    // Prepare SQL using mysqli prepared statements
+    // Featured toggle (tinyint)
+    $featured = isset($_POST['featured']) ? 1 : 0;
+
+    // Prepare SQL
     $stmt = $pg_services->prepare("
         INSERT INTO stock (
             make, model, trim, additional, yearPlate, regNumber, fuelType,
             engineSize, mileage, transmission, bodyType, powerBhp, doorsNo,
-            colour, description, price
+            colour, description, price, featured
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     if (!$stmt) {
-        die("Database error: " . $pg_services->error);
+        die('Database error: ' . $pg_services->error);
     }
 
-    // Bind parameters (all strings is fine — MySQL will cast numeric fields)
     $stmt->bind_param(
-        "ssssssssssssssss",
+        "ssssssssssssssssi",
         $make, $model, $trim, $additional, $yearPlate, $regNumber, $fuelType,
         $engineSize, $mileage, $transmission, $bodyType, $powerBhp, $doorsNo,
-        $colour, $description, $price
+        $colour, $description, $price, $featured
     );
 
     $stmt->execute();
@@ -53,194 +55,149 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_insert']) && $_POS
         die("Insert failed: " . $stmt->error);
     }
 
-    // Get new stock ID
     $stockID = $stmt->insert_id;
     $stmt->close();
 
-    // Handle image upload via the new unified engine
+    // Handle image upload
     if (!empty($_FILES['pix']['name'][0])) {
-
-        // Rename field to match upload_images.php expectations
         $_FILES['images'] = $_FILES['pix'];
-
-        // Add stockID to POST
         $_POST['stockID'] = $stockID;
-
-        // Run the upload engine (it will redirect)
         include("scripts/upload_images.php");
         exit;
     }
-
 }
 ?>
 
+<?php include("includes/_header.php"); ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
-    <link href="styles/pgLayout.css?v=<?=filemtime('styles/pgLayout.css')?>" rel="stylesheet" type="text/css">
-</head>
-<body>
-<div class="adminGridContainer clearfix">
-    <div id="header">
-        <?php include("includes/header2.txt"); ?>
-        <div id="admin" align="right">ADMIN AREA</div> 
+
+    <h1 class="admin-title">Add Vehicle</h1>
+
+    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data" class="admin-form">
+
+        <div class="form-grid">
+
+    <div class="form-group">
+        <label>Make</label>
+        <input type="text" name="make" placeholder="e.g. Ford" required>
     </div>
 
-<div id="nav">      
-    <a href="index.php" class="btn btn-secondary nav-back">← Back to Admin Menu</a>
+    <div class="form-group">
+        <label>Model</label>
+        <input type="text" name="model" placeholder="e.g. Fiesta" required>
+    </div>
 
-    <button id="nav-toggle" aria-label="Open navigation">
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-  <span class="hamburger"></span>
-</button>
-<?php include("includes/nav2.txt"); ?>
+    <div class="form-group">
+        <label>Trim</label>
+        <input type="text" name="trim" placeholder="e.g. Titanium X">
+    </div>
+
+    <div class="form-group full">
+        <label>Extra Info</label>
+        <textarea name="additional" rows="3" placeholder="Optional notes… These form part of the title, along with make, model and trim."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Year / Plate</label>
+        <input type="text" name="yearPlate" placeholder="e.g. 2015 / 65">
+    </div>
+
+    <div class="form-group">
+        <label>Registration Number</label>
+        <input type="text" name="regNumber" placeholder="e.g. AB12 CDE">
+    </div>
+
+    <div class="form-group">
+        <label>Fuel Type</label>
+        <input type="text" name="fuelType" placeholder="e.g. Petrol">
+    </div>
+
+    <div class="form-group">
+        <label>Engine Size</label>
+        <input type="text" name="engineSize" placeholder="e.g. 1998">
+    </div>
+
+    <div class="form-group">
+        <label>Mileage</label>
+        <input type="text" name="mileage" placeholder="e.g. 123000">
+    </div>
+
+    <div class="form-group">
+        <label>Transmission</label>
+        <input type="text" name="transmission" placeholder="e.g. Manual">
+    </div>
+
+    <div class="form-group">
+        <label>Body Type</label>
+        <input type="text" name="bodyType" placeholder="e.g. Hatchback">
+    </div>
+
+    <div class="form-group">
+        <label>Power (BHP)</label>
+        <input type="text" name="powerBhp" placeholder="e.g. 150">
+    </div>
+
+    <div class="form-group">
+        <label>Doors</label>
+        <input type="text" name="doorsNo" placeholder="e.g. 5">
+    </div>
+
+    <div class="form-group">
+        <label>Colour</label>
+        <input type="text" name="colour" placeholder="e.g. Black">
+    </div>
+
+    <div class="form-group full">
+        <label>Description</label>
+        <textarea name="description" rows="5" placeholder="Full vehicle description…"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Price (£)</label>
+        <input type="text" name="price" placeholder="e.g. 7995">
+    </div>
+
+    <div class="form-group full">
+        <label>Upload Images</label>
+        <input type="file" name="pix[]" multiple accept="image/*">
+        <div id="previewContainer" class="image-preview"></div>
+    </div>
+
 </div>
 
-    <div id="admin-content">
-<div id="admin-content">
-    <h1>Add Vehicle</h1>
 
-    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data">
-
-        <p>
-            <label>Make:</label>
-            <input type="text" name="make" required placeholder="e.g. Ford">
-        </p>
-
-        <p>
-            <label>Model:</label>
-            <input type="text" name="model" required placeholder="e.g. Fiesta">
-        </p>
-
-        <p>
-            <label>Trim:</label>
-            <input type="text" name="trim" placeholder="e.g. Zetec, Titanium, Sport">
-        </p>
-
-        <p>
-            <label>Extra info:</label>
-            <textarea name="additional" rows="3" cols="30" placeholder="Optional notes (spec, condition, features). This will go to make up the title"></textarea>
-        </p>
-
-        <p>
-            <label>Year/Plate:</label>
-            <input type="text" name="yearPlate" placeholder="e.g. 2016 / 66 plate">
-        </p>
-
-        <p>
-            <label>Registration Number:</label>
-            <input type="text" name="regNumber" placeholder="e.g. AB16 XYZ">
-        </p>
-
-        <p>
-            <label>Fuel Type:</label>
-            <input type="text" name="fuelType" placeholder="e.g. Petrol, Diesel, Hybrid">
-        </p>
-
-        <p>
-            <label>Engine Size:</label>
-            <input type="text" name="engineSize" placeholder="e.g. 1600">
-        </p>
-
-        <p>
-            <label>Mileage:</label>
-            <input type="text" name="mileage" placeholder="e.g. 54000">
-        </p>
-
-        <p>
-            <label>Transmission:</label>
-            <input type="text" name="transmission" placeholder="e.g. Manual / Automatic">
-        </p>
-
-        <p>
-            <label>Body Type:</label>
-            <input type="text" name="bodyType" placeholder="e.g. Hatchback, SUV, Estate">
-        </p>
-
-        <p>
-            <label>Power (BHP):</label>
-            <input type="text" name="powerBhp" placeholder="e.g. 120">
-        </p>
-
-        <p>
-            <label>Doors No.:</label>
-            <input type="text" name="doorsNo" placeholder="e.g. 5">
-        </p>
-
-        <p>
-            <label>Colour:</label>
-            <input type="text" name="colour" placeholder="e.g. Blue">
-        </p>
-
-        <p>
-            <label>Description:</label>
-            <textarea name="description" rows="5" cols="50" placeholder="Full description of the vehicle..."></textarea>
-        </p>
-
-        <p>
-            <label>Price:</label>
-            <input type="text" name="price" placeholder="e.g. 5995">
-        </p>
-
-        <p>
-            <label>Upload Images:</label>
-            <input type="file" name="pix[]" multiple accept="image/*">
-        </p>
+        <!-- Featured toggle -->
+        <div class="form-group toggle-group">
+            <label class="toggle">
+                <input type="checkbox" name="featured" value="1">
+                <span class="slider"></span>
+                <span class="toggle-label">Featured</span>
+            </label>
+        </div>
 
         <input type="hidden" name="MM_insert" value="form1">
 
-        <p>
-            <input type="submit" value="Add to stock">
-        </p>
+        <div class="form-actions">
+            <button type="submit" class="admin-btn primary">Add Vehicle</button>
+            <a href="manage_stock.php" class="admin-btn">Cancel</a>
+        </div>
 
+    </form>
 
-        <!-- Image preview container -->
-        <div id="previewContainer" class="mt-3"></div>
+</div>
 
 <script>
 document.querySelector('input[name="pix[]"]').addEventListener('change', function(e) {
     const container = document.getElementById('previewContainer');
-    container.innerHTML = ''; // Clear old previews
-
+    container.innerHTML = '';
     Array.from(e.target.files).forEach(file => {
         if (!file.type.startsWith('image/')) return;
-
         const img = document.createElement('img');
         img.src = URL.createObjectURL(file);
-        img.style.height = '80px';
-        img.style.marginRight = '8px';
-        img.style.borderRadius = '6px';
-        img.style.objectFit = 'cover';
-
+        img.className = 'preview-thumb';
         container.appendChild(img);
     });
 });
 </script>
 
-
-    </form>
-</div>
-
-    <div id="footer1">
-        <p>VIEWING BY APPOINTMENT , ALL VEHICLES VALETED WITH AUTOGLYM PRODUCTS TO A VERY HIGH STANDARD</p>
-    </div>
-    <div id="footer2">
-        <p><a href="../scripts/logout.php" class="btn btn-secondary">Log out</a></p>
-    </div>
-</div>
-<script>
-document.getElementById('nav-toggle').addEventListener('click', function() {
-  var navList = document.querySelector('#navbar');
-  navList.classList.toggle('open');
-});
-</script>
-
-</body>
-</html>
+<?php include("includes/_footer.php"); ?>
