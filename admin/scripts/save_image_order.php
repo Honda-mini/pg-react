@@ -1,10 +1,10 @@
 <?php
-// scripts/save_image_order.php
+header('Content-Type: application/json');
 
-// Get POSTed JSON data
 $data = json_decode(file_get_contents('php://input'), true);
+
 $stockID = intval($data['stockID'] ?? 0);
-$order = $data['order'] ?? [];
+$order   = $data['order'] ?? [];
 
 if (!$stockID || !is_array($order)) {
     http_response_code(400);
@@ -12,11 +12,18 @@ if (!$stockID || !is_array($order)) {
     exit;
 }
 
-$orderFile = "../../images/cars/$stockID/order.json";
-if (file_put_contents($orderFile, json_encode($order))) {
+$dir = "../../public/images/cars/{$stockID}/";
+$orderFile = $dir . "order.json";
+
+if (!is_dir($dir)) {
+    http_response_code(404);
+    echo json_encode(['status' => 'error', 'msg' => 'Image folder not found']);
+    exit;
+}
+
+if (file_put_contents($orderFile, json_encode($order, JSON_PRETTY_PRINT))) {
     echo json_encode(['status' => 'success', 'msg' => 'Order saved!']);
 } else {
     http_response_code(500);
     echo json_encode(['status' => 'error', 'msg' => 'Failed to save order']);
 }
-?>

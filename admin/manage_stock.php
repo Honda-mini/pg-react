@@ -1,4 +1,5 @@
 <?php
+
 require_once('scripts/auth_session.php');
 require_once('../src/utils/pg_services.php');
 
@@ -12,8 +13,41 @@ if (!empty($_SESSION['success'])) {
 
 
 <?php
-// Fetch stock data
-$query = "SELECT stockID, make, model, trim, regNumber, price FROM stock ORDER BY updated DESC";
+// Build dynamic WHERE conditions
+$where = [];
+$q = $_GET['q'] ?? '';
+$makeFilter = $_GET['make'] ?? '';
+$hasImages = $_GET['hasImages'] ?? '';
+
+// Search text
+if ($q !== '') {
+    $qEsc = $pg_services->real_escape_string($q);
+    $where[] = "(stockID LIKE '%$qEsc%' 
+                 OR make LIKE '%$qEsc%' 
+                 OR model LIKE '%$qEsc%' 
+                 OR trim LIKE '%$qEsc%' 
+                 OR regNumber LIKE '%$qEsc%')";
+}
+
+// Filter by make
+if ($makeFilter !== '') {
+    if ($makeFilter === '__NONE__') {
+        $where[] = "(make IS NULL OR make = '')";
+    } else {
+        $makeEsc = $pg_services->real_escape_string($makeFilter);
+        $where[] = "make = '$makeEsc'";
+    }
+}
+
+// Build WHERE SQL
+$whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
+
+// Final query
+$query = "SELECT stockID, make, model, trim, regNumber, price 
+          FROM stock 
+          $whereSQL
+          ORDER BY updated DESC";
+
 $result = $pg_services->query($query);
 ?>
 
@@ -81,22 +115,105 @@ $result = $pg_services->query($query);
     <div id="admin-content">
         <h1>Manage Vehicle Stock</h1>
 
+<!-- Search and filter form -->
+        <form method="GET" class="stock-search" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+    
+    <input type="text" 
+           name="q" 
+           placeholder="Search make, model, reg, ID…" 
+           value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
+           class="form-control"
+           style="max-width: 250px;">
 
+    <select name="make" class="form-select" style="max-width: 180px;">
+    <option value="">All Makes</option>
+
+    <?php
+    $makes = $pg_services->query("
+        SELECT DISTINCT 
+            CASE 
+                WHEN make IS NULL OR make = '' THEN '__NONE__'
+                ELSE make
+            END AS makeValue
+        FROM stock
+        ORDER BY makeValue ASC
+    ");
+
+    while ($m = $makes->fetch_assoc()):
+        $value = $m['makeValue'];
+        $label = ($value === '__NONE__') ? 'No Make' : $value;
+        $selected = (($_GET['make'] ?? '') === $value) ? 'selected' : '';
+    ?>
+        <option value="<?= htmlspecialchars($value) ?>" <?= $selected ?>>
+            <?= htmlspecialchars($label) ?>
+        </option>
+    <?php endwhile; ?>
+</select>
+
+
+    <select name="hasImages" class="form-select" style="max-width: 180px;">
+        <option value="">All Vehicles</option>
+        <option value="1" <?= (($_GET['hasImages'] ?? '') === '1') ? 'selected' : '' ?>>Has Images</option>
+        <option value="0" <?= (($_GET['hasImages'] ?? '') === '0') ? 'selected' : '' ?>>No Images</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<!-- Vehicle list -->
 <div class="vehicle-list">
 <?php while ($row = $result->fetch_assoc()) { ?>
+
+<!-- Image handling logic: Count main images (1.webp, 2.webp…) and load primary thumbnail from order.json if it exists. -->
 <?php
-$imageDir = __DIR__ . "/../images/cars/" . $row['stockID'] . "/";
+$imageDir = __DIR__ . "/../public/images/cars/" . $row['stockID'] . "/";
 $imageCount = 0;
+$primaryThumb = null;
+
 if (is_dir($imageDir)) {
-    $files = array_diff(scandir($imageDir), ['.', '..', 'thumbs', '.DS_Store', 'order.json']);
-    foreach ($files as $file) {
-        if (is_file($imageDir . $file) && preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
+
+    // Count ONLY main images (1.webp, 2.webp…)
+    foreach (scandir($imageDir) as $file) {
+        if (preg_match('/^[0-9]+\.webp$/', $file)) {
             $imageCount++;
+        }
+    }
+
+    // Load primary image from order.json
+    $orderFile = $imageDir . "order.json";
+    if (file_exists($orderFile)) {
+        $order = json_decode(file_get_contents($orderFile), true);
+
+        if (is_array($order) && count($order) > 0) {
+
+            // Extract base name (e.g. "1" from "1.webp")
+            $base = pathinfo($order[0], PATHINFO_FILENAME);
+
+            $thumb400 = "../public/images/cars/{$row['stockID']}/{$base}_400.webp";
+            $thumb800 = "../public/images/cars/{$row['stockID']}/{$base}_800.webp";
+            $thumbFull = "../public/images/cars/{$row['stockID']}/{$order[0]}";
+
+            if (file_exists($imageDir . "{$base}_400.webp")) {
+                $primaryThumb = $thumb400;
+            } elseif (file_exists($imageDir . "{$base}_800.webp")) {
+                $primaryThumb = $thumb800;
+            } elseif (file_exists($imageDir . $order[0])) {
+                $primaryThumb = $thumbFull;
+            }
         }
     }
 }
 ?>
+
   <div class="vehicle-card">
+
+<!-- Display primary thumbnail if available, otherwise show placeholder -->
+  <?php if ($primaryThumb): ?>
+    <img src="<?= $primaryThumb ?>" class="vehicle-thumb">
+<?php else: ?>
+    <div class="vehicle-thumb placeholder">No Image</div>
+<?php endif; ?>
+
     <div class="vehicle-id"><strong>ID:</strong> <?php echo htmlspecialchars($row['stockID']); ?></div>
     
     <?php
@@ -152,7 +269,7 @@ $(document).ready(function () {
         e.preventDefault();
         const stockID = $(this).data('stockid');
 
-        $('#imageModal .modal-content').load('views/image_manager.php?stockID=' + stockID, function (response, status, xhr) {
+        $('#imageModal .modal-content').load('image_manager.php?stockID=' + stockID, function (response, status, xhr) {
             if (status === 'error') {
                 $('#imageModal .modal-content').html('<p>Error loading image manager.</p>');
                 console.error('AJAX error:', xhr.statusText);

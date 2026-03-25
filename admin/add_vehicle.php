@@ -1,270 +1,80 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once('../src/utils/pg_services.php');
-session_start();
-ob_start(); // Start output buffering
 
-// Debug switch (set to true to show POST and FILES)
-$debug = true;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_insert']) && $_POST['MM_insert'] === 'form1') {
 
-// Logout logic
-if (isset($_GET['doLogout']) && $_GET['doLogout'] === 'true') {
-    $_SESSION = [];
-    session_destroy();
-    header("Location: ../stock.php");
-    exit;
-}
+    // Collect form fields
+    $make         = $_POST['make'];
+    $model        = $_POST['model'];
+    $trim         = $_POST['trim'];
+    $additional   = $_POST['additional'];
+    $yearPlate    = $_POST['yearPlate'];
+    $regNumber    = $_POST['regNumber'];
+    $fuelType     = $_POST['fuelType'];
+    $engineSize   = $_POST['engineSize'];
+    $mileage      = $_POST['mileage'];
+    $transmission = $_POST['transmission'];
+    $bodyType     = $_POST['bodyType'];
+    $powerBhp     = $_POST['powerBhp'];
+    $doorsNo      = $_POST['doorsNo'];
+    $colour       = $_POST['colour'];
+    $description  = $_POST['description'];
+    $price        = $_POST['price'];
 
-$logoutAction = htmlspecialchars($_SERVER['PHP_SELF']) . "?doLogout=true" . 
-    (!empty($_SERVER['QUERY_STRING']) ? '&' . htmlentities($_SERVER['QUERY_STRING']) : '');
+    // Prepare SQL using mysqli prepared statements
+    $stmt = $pg_services->prepare("
+        INSERT INTO stock (
+            make, model, trim, additional, yearPlate, regNumber, fuelType,
+            engineSize, mileage, transmission, bodyType, powerBhp, doorsNo,
+            colour, description, price
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
-if (empty($_SESSION['username'])) {
-    header("Location: login.php?accesscheck=" . urlencode($_SERVER['REQUEST_URI']));
-    exit;
-}
-
-// Create thumbnail
-function createThumbnail($sourcePath, $thumbPath, $thumbWidth = 200) {
-    $imgInfo = getimagesize($sourcePath);
-    if (!$imgInfo) return false;
-
-    list($width, $height, $type) = $imgInfo;
-
-    switch ($type) {
-        case IMAGETYPE_JPEG: $srcImg = imagecreatefromjpeg($sourcePath); break;
-        case IMAGETYPE_PNG:  $srcImg = imagecreatefrompng($sourcePath); break;
-        case IMAGETYPE_GIF:  $srcImg = imagecreatefromgif($sourcePath); break;
-        default: return false;
+    if (!$stmt) {
+        die("Database error: " . $pg_services->error);
     }
 
-    $thumbHeight = floor($height * ($thumbWidth / $width));
-    $thumbImg = imagecreatetruecolor($thumbWidth, $thumbHeight);
-    imagecopyresampled($thumbImg, $srcImg, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+    // Bind parameters (all strings is fine — MySQL will cast numeric fields)
+    $stmt->bind_param(
+        "ssssssssssssssss",
+        $make, $model, $trim, $additional, $yearPlate, $regNumber, $fuelType,
+        $engineSize, $mileage, $transmission, $bodyType, $powerBhp, $doorsNo,
+        $colour, $description, $price
+    );
 
-    switch ($type) {
-        case IMAGETYPE_JPEG: imagejpeg($thumbImg, $thumbPath); break;
-        case IMAGETYPE_PNG:  imagepng($thumbImg, $thumbPath); break;
-        case IMAGETYPE_GIF:  imagegif($thumbImg, $thumbPath); break;
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die("Insert failed: " . $stmt->error);
     }
 
-    imagedestroy($srcImg);
-    imagedestroy($thumbImg);
-    return true;
-}
+    // Get new stock ID
+    $stockID = $stmt->insert_id;
+    $stmt->close();
 
-$success = false;
-$error = '';
+    // Handle image upload via the new unified engine
+    if (!empty($_FILES['pix']['name'][0])) {
 
-// Handle form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["MM_insert"]) && $_POST["MM_insert"] === "form1") {
-    $mysqli = new mysqli($hostname_pg_services, $username_pg_services, $password_pg_services, $database_pg_services);
-    if ($mysqli->connect_error) {
-        $error = "DB Connection failed: " . $mysqli->connect_error;
-    } else {
-        $sql = "INSERT INTO stock (make, model, `trim`, additional, yearPlate, regNumber, fuelType, engineSize, mileage, transmission, bodyType, powerBhp, doorsNo, colour, `description`, price) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $mysqli->prepare($sql);
+        // Rename field to match upload_images.php expectations
+        $_FILES['images'] = $_FILES['pix'];
 
-        if (!$stmt) {
-            $error = "Prepare failed: " . $mysqli->error;
-        } else {
-          $make = $_POST['make'];
-          $model = $_POST['model'];
-          $trim = $_POST['trim'];
-          $additional = $_POST['additional'];
-          $yearPlate = $_POST['yearPlate'];
-          $regNumber = $_POST['regNumber'];
-          $fuelType = $_POST['fuelType'];
-          $engineSize = (int)$_POST['engineSize'];
-          $mileage = (int)$_POST['mileage'];
-          $transmission = $_POST['transmission'];
-          $bodyType = $_POST['bodyType'];
-          $powerBhp = (int)$_POST['powerBhp'];
-          $doorsNo = (int)$_POST['doorsNo'];
-          $colour = $_POST['colour'];
-          $description = $_POST['description'];
-          $price = $_POST['price'];
+        // Add stockID to POST
+        $_POST['stockID'] = $stockID;
 
-          // Bind parameters
-          if (!$stmt->bind_param(
-              "sssssssiissiisss",
-              $make, $model, $trim, $additional, $yearPlate, $regNumber, $fuelType,
-              $engineSize, $mileage, $transmission, $bodyType,
-              $powerBhp, $doorsNo, $colour, $description, $price
-          )) {
-              $error = "Bind failed: " . $stmt->error;
-          }
-
-          // Execute the statement
-          if ($stmt->execute()) {
-              $stockID = $stmt->insert_id;
-              $uploadDir = "../images/cars/$stockID/";
-              $thumbDir = $uploadDir . "thumbs/";
-
-              // Create the upload and thumbnail directories if they don't exist
-              @mkdir($thumbDir, 0777, true);
-
-              $files = $_FILES['pix'];
-              $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
-
-if (!empty($files['name'][0])) {
-
-    // Config (portable for React)
-    $MAX_MAIN_SIZE = 1920;
-    $THUMB_WIDTH = 400;
-    $JPG_QUALITY = 80;
-    $WEBP_QUALITY = 80;
-
-    // Utility: load image
-    function loadImageUpload($path, $mime) {
-        switch ($mime) {
-            case 'image/jpeg': return @imagecreatefromjpeg($path);
-            case 'image/png':  return @imagecreatefrompng($path);
-            default: return false;
-        }
+        // Run the upload engine (it will redirect)
+        include("scripts/upload_images.php");
+        exit;
     }
 
-    // Utility: fix EXIF rotation
-    function fixOrientationUpload($img, $path) {
-        if (!function_exists('exif_read_data')) return $img;
-        $exif = @exif_read_data($path);
-        if (!$exif || !isset($exif['Orientation'])) return $img;
-
-        switch ($exif['Orientation']) {
-            case 3: return imagerotate($img, 180, 0);
-            case 6: return imagerotate($img, -90, 0);
-            case 8: return imagerotate($img, 90, 0);
-            default: return $img;
-        }
-    }
-
-    // Resize + save JPG
-    function resizeAndSaveJPGUpload($srcPath, $destPath, $maxSize, $quality) {
-        $info = @getimagesize($srcPath);
-        if (!$info) return false;
-
-        list($width, $height) = $info;
-        $mime = $info['mime'];
-
-        $src = loadImageUpload($srcPath, $mime);
-        if (!$src) return false;
-
-        $src = fixOrientationUpload($src, $srcPath);
-
-        $ratio = $width / $height;
-
-        if ($ratio > 1) {
-            $newWidth = $maxSize;
-            $newHeight = (int)($maxSize / $ratio);
-        } else {
-            $newHeight = $maxSize;
-            $newWidth = (int)($maxSize * $ratio);
-        }
-
-        $dst = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-        imagejpeg($dst, $destPath, $quality);
-
-        imagedestroy($src);
-        imagedestroy($dst);
-
-        return true;
-    }
-
-    // Create thumbnail
-    function createThumbnailUpload($srcPath, $thumbPath, $thumbWidth, $quality) {
-        $info = @getimagesize($srcPath);
-        if (!$info) return false;
-
-        list($width, $height) = $info;
-        $mime = $info['mime'];
-
-        $src = loadImageUpload($srcPath, $mime);
-        if (!$src) return false;
-
-        $src = fixOrientationUpload($src, $srcPath);
-
-        $ratio = $thumbWidth / $width;
-        $thumbHeight = (int)($height * $ratio);
-
-        $thumb = imagecreatetruecolor($thumbWidth, $thumbHeight);
-        imagecopyresampled($thumb, $src, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
-
-        imagejpeg($thumb, $thumbPath, $quality);
-
-        imagedestroy($src);
-        imagedestroy($thumb);
-
-        return true;
-    }
-
-    // Create WebP
-    function createWebPUpload($srcPath, $destPath, $quality) {
-        $info = @getimagesize($srcPath);
-        if (!$info) return false;
-
-        $mime = $info['mime'];
-        $src = loadImageUpload($srcPath, $mime);
-        if (!$src) return false;
-
-        imagewebp($src, $destPath, $quality);
-        imagedestroy($src);
-
-        return true;
-    }
-
-    // Loop through uploaded files
-    for ($i = 0; $i < count($files['name']); $i++) {
-
-        $file_name = $files['name'][$i];
-        $file_tmp  = $files['tmp_name'][$i];
-        $file_size = $files['size'][$i];
-        $file_ext  = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-        if (!in_array($file_ext, ['jpg', 'jpeg', 'png'])) {
-            continue;
-        }
-
-        // Always save as JPG
-        $newName = ($i + 1) . ".jpg";
-
-$dest = $uploadDir . $newName;
-$thumbDest = $thumbDir . $newName;
-
-// Resize + save main JPG
-resizeAndSaveJPGUpload($file_tmp, $dest, $MAX_MAIN_SIZE, $JPG_QUALITY);
-
-// Create thumbnail
-createThumbnailUpload($dest, $thumbDest, $THUMB_WIDTH, $JPG_QUALITY);
-
-// Create WebP versions
-createWebPUpload($dest, $uploadDir . ($i + 1) . ".webp", $WEBP_QUALITY);
-createWebPUpload($thumbDest, $thumbDir . ($i + 1) . ".webp", $WEBP_QUALITY);
-
-// Delete original upload
-@unlink($file_tmp);
-}   // ← closes the upload loop ONLY
-
-// ❌ REMOVE THIS ONE
-// }   ← this was the extra brace causing the syntax error
-
-}   // ← closes the "if (!empty(files))" block
-              // Set the success message and redirect
-              $_SESSION['uploadMessage'] = "✔ Vehicle successfully added!";
-              $_SESSION['uploadMessageType'] = "success";
-                            header("Location: manage_stock.php");
-              exit;
-
-          } else {
-              $error = "Insert failed: " . $stmt->error;
-          }
-
-          $stmt->close();
-          $mysqli->close();
-        }
-    }
 }
 ?>
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -381,7 +191,7 @@ createWebPUpload($thumbDest, $thumbDir . ($i + 1) . ".webp", $WEBP_QUALITY);
 
         <p>
             <label>Upload Images:</label>
-            <input type="file" name="pix[]" multiple>
+            <input type="file" name="pix[]" multiple accept="image/*">
         </p>
 
         <input type="hidden" name="MM_insert" value="form1">
@@ -390,6 +200,31 @@ createWebPUpload($thumbDest, $thumbDir . ($i + 1) . ".webp", $WEBP_QUALITY);
             <input type="submit" value="Add to stock">
         </p>
 
+
+        <!-- Image preview container -->
+        <div id="previewContainer" class="mt-3"></div>
+
+<script>
+document.querySelector('input[name="pix[]"]').addEventListener('change', function(e) {
+    const container = document.getElementById('previewContainer');
+    container.innerHTML = ''; // Clear old previews
+
+    Array.from(e.target.files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.style.height = '80px';
+        img.style.marginRight = '8px';
+        img.style.borderRadius = '6px';
+        img.style.objectFit = 'cover';
+
+        container.appendChild(img);
+    });
+});
+</script>
+
+
     </form>
 </div>
 
@@ -397,7 +232,7 @@ createWebPUpload($thumbDest, $thumbDir . ($i + 1) . ".webp", $WEBP_QUALITY);
         <p>VIEWING BY APPOINTMENT , ALL VEHICLES VALETED WITH AUTOGLYM PRODUCTS TO A VERY HIGH STANDARD</p>
     </div>
     <div id="footer2">
-        <p><a href="<?= $logoutAction ?>" class="btn btn-secondary">Log out</a></p>
+        <p><a href="../scripts/logout.php" class="btn btn-secondary">Log out</a></p>
     </div>
 </div>
 <script>

@@ -1005,4 +1005,21 @@ button.action-btn:hover {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+.vehicle-thumb {
+    width: 100%;
+    max-width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: #eee;
+}
+
+.vehicle-thumb.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    font-size: 0.8em;
+}
 
