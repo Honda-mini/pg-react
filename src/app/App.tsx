@@ -13,7 +13,7 @@ import AboutPage from '../pages/AboutUs';
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename='/test'>
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
           <Header />
 
