@@ -1,5 +1,5 @@
 <?php
-require_once('../src/utils/pg_services.php');
+require_once('../Connections/pg_services.php');
 
 // Optional success message
 $uploadMessage = '';
@@ -111,7 +111,7 @@ $result = $pg_services->query($query);
 
         <?php
         // Image logic preserved
-        $imageDir = __DIR__ . "/../public/images/cars/" . $row['stockID'] . "/";
+        $imageDir = __DIR__ . "/..//images/cars/" . $row['stockID'] . "/";
         $imageCount = 0;
         $primaryThumb = null;
 
@@ -129,9 +129,9 @@ $result = $pg_services->query($query);
                 if (is_array($order) && count($order) > 0) {
                     $base = pathinfo($order[0], PATHINFO_FILENAME);
 
-                    $thumb400 = "../public/images/cars/{$row['stockID']}/{$base}_400.webp";
-                    $thumb800 = "../public/images/cars/{$row['stockID']}/{$base}_800.webp";
-                    $thumbFull = "../public/images/cars/{$row['stockID']}/{$order[0]}";
+                    $thumb400 = "../images/cars/{$row['stockID']}/{$base}_400.webp";
+                    $thumb800 = "../images/cars/{$row['stockID']}/{$base}_800.webp";
+                    $thumbFull = "../images/cars/{$row['stockID']}/{$order[0]}";
 
                     if (file_exists($imageDir . "{$base}_400.webp")) {
                         $primaryThumb = $thumb400;

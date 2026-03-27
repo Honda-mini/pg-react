@@ -1,6 +1,6 @@
 <?php include("includes/_header.php"); ?>
 <?php
-require_once('../src/utils/pg_services.php');
+require_once('../Connections/pg_services.php');
 require_once('scripts/auth_session.php');
 
 $success = false;

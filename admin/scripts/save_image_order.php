@@ -12,7 +12,7 @@ if (!$stockID || !is_array($order)) {
     exit;
 }
 
-$dir = "../../public/images/cars/{$stockID}/";
+$dir = "../../images/cars/{$stockID}/";
 $orderFile = $dir . "order.json";
 
 if (!is_dir($dir)) {

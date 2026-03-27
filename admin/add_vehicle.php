@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once('../src/utils/pg_services.php');
+require_once('../Connections/pg_services.php');
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MM_insert']) && $_POST['MM_insert'] === 'form1') {

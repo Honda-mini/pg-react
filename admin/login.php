@@ -1,6 +1,6 @@
 <?php
 
-require_once('../src/utils/pg_services.php');
+require_once('../Connections/pg_services.php');
 session_start();
 
 // Check DB connection

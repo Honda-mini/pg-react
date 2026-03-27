@@ -7,8 +7,8 @@ if (!$stockID) {
     die('Missing stock ID');
 }
 
-$dir = "../public/images/cars/{$stockID}/";
-$publicDir = "../public/images/cars/{$stockID}/";
+$dir = "../images/cars/{$stockID}/";
+$publicDir = "../images/cars/{$stockID}/";
 
 if (!is_dir($dir)) {
     mkdir($dir, 0775, true);

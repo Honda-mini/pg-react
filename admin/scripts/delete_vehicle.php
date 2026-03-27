@@ -1,5 +1,5 @@
 <?php
-require_once('../../src/utils/pg_services.php');
+require_once('../../Connections/pg_services.php');
 session_start();
 
 // Recursive folder delete function (you already have this)
@@ -27,7 +27,7 @@ if (isset($_GET['stockID']) && is_numeric($_GET['stockID'])) {
     $stockID = (int) $_GET['stockID'];
 
     // Attempt image directory deletion
-    $dir = "../../public/images/cars/$stockID";
+    $dir = "../../images/cars/$stockID";
     $imagesDeleted = deleteDir($dir);
 
     // Delete DB record

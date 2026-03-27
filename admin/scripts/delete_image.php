@@ -12,7 +12,7 @@ if (!$stockID || !$filename) {
     exit;
 }
 
-$dir = "../../public/images/cars/{$stockID}/";
+$dir = "../../images/cars/{$stockID}/";
 $origDir = $dir . "orig/";
 
 $mainFile = $dir . $filename;
