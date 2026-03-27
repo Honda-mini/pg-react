@@ -111,7 +111,7 @@ $result = $pg_services->query($query);
 
         <?php
         // Image logic preserved
-        $imageDir = __DIR__ . "/..//images/cars/" . $row['stockID'] . "/";
+        $imageDir = __DIR__ . "/../images/cars/" . $row['stockID'] . "/";
         $imageCount = 0;
         $primaryThumb = null;
 

@@ -27,7 +27,7 @@ if (isset($_GET['stockID']) && is_numeric($_GET['stockID'])) {
     $stockID = (int) $_GET['stockID'];
 
     // Attempt image directory deletion
-    $dir = "../../images/cars/$stockID";
+$dir = dirname(__DIR__, 2) . "/images/cars/{$stockID}/";
     $imagesDeleted = deleteDir($dir);
 
     // Delete DB record

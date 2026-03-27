@@ -9,7 +9,7 @@ if (!$stockID) {
     die("No valid stock ID provided.");
 }
 
-$baseDir = $_SERVER['DOCUMENT_ROOT'] . "/reactPg/images/cars/{$stockID}/";
+$baseDir = dirname(__DIR__, 2) . "/images/cars/{$stockID}/";
 $origDir   = $baseDir . "orig/";
 $orderFile = $baseDir . "order.json";
 
