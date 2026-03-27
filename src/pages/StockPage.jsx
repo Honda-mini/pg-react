@@ -25,7 +25,7 @@ const end = start + carsPerPage;
 
 const paginatedCars = cars.slice(start, end);
 useEffect(() => {
-  fetch("http://localhost:8888/reactPg/api/getAllVehicles.php")
+fetch(`${import.meta.env.VITE_API_URL}/getAllVehicles.php`)
     .then((res) => res.json())
     .then((data) => {
       const cleaned = data.map(car => ({

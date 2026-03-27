@@ -46,7 +46,8 @@ export function CarSlider() {
   const [cars, setCars] = useState<Car[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8888/reactPg/api/cars.php")
+    fetch(`${import.meta.env.VITE_API_URL}/cars.php`)
+
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((car: any) => ({
