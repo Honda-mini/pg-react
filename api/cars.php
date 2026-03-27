@@ -5,8 +5,7 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-require_once dirname(__DIR__) . '/src/utils/pg_services.php';
-require_once dirname(__DIR__) . '/src/utils/helpers.php';
+require_once __DIR__ . '/../Connections/pg_services.php';
 
 
 $query = "SELECT stockID, make, model, trim, additional, yearPlate, mileage,  price, dateAdded, featured, reserved, sold
@@ -51,7 +50,7 @@ $isNumeric = is_numeric($rawPrice);
 
 if ($isNumeric) {
     // Format numeric price (e.g., £12,995)
-    $row['price'] = formatPrice($rawPrice);
+   $row['price'] = "£" . number_format((int)$rawPrice);
 } else {
     // Normalise status text
     $status = strtolower(trim($rawPrice));

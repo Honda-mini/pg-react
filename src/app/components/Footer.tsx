@@ -80,7 +80,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-gray-800 dark:border-gray-900 text-center text-gray-400 relative">
           <p>&copy; 2026 PG Services. All rights reserved. | Privacy Policy | Terms of Service           
-            <a href="http://localhost:8888/reactPg/admin/" className="admin-icon" aria-label="Admin">
+            <a href={import.meta.env.VITE_ADMIN_URL} className="admin-icon" aria-label="Admin">
     <Wrench size={20} />
   </a>
 </p>

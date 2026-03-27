@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-require_once dirname(__DIR__) . '/src/utils/pg_services.php';
-require_once dirname(__DIR__) . '/src/utils/helpers.php';
+require_once __DIR__ . '/../Connections/pg_services.php';
+
 
 // Validate ID
 $stockID = isset($_GET['id']) ? (int)$_GET['id'] : 0;
