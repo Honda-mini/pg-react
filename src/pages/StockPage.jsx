@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getThumbPaths } from "../utils/imagePaths";
+import StatusBadge from "../app/components/StatusBadge";
 
 
 export default function StockPage() {
@@ -98,63 +99,103 @@ fetch(`${import.meta.env.VITE_API_URL}/getAllVehicles.php`)
 
 
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-        
-{paginatedCars.map((car) => {
+  {paginatedCars.map((car) => {
   const images = car.images;
 
+  const isSold = Number(car.sold) === 1;
+  const isReserved = Number(car.reserved) === 1;
+  const isDisabled = isSold || isReserved;
+
   return (
-    <a key={car.stockID} href={`/vehicle/${car.stockID}`} className="group ...">
-      <div className="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
-        <img
-          src={images.thumb400}
-          srcSet={`${images.thumb400} 1x, ${images.thumb800} 2x`}
-          alt={car.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-          loading="lazy"
-        />
-      </div>
-            <div className="p-4">
-              <h3 className="text-lg font-medium mb-1">{car.name}</h3>
+    <div
+      key={car.stockID} className="relative">
 
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                {car.mileage}
-              </p>
-<div className="space-y3">
-              {/* STATUS / PRICE */}
-              {car.sold ? (
-                <p className="inline-block px-3 py-1 text-xs font-semibold rounded bg-red-600 text-white">
-                  Sold
-                </p>
-              ) : car.reserved ? (
-                <p className="inline-block px-3 py-1 text-xs font-semibold rounded bg-yellow-500 text-black">
-                  Deposit Taken
-                </p>
-              ) : car.featured ? (
-                <p className="inline-block px-3 py-1 text-xs font-semibold rounded bg-blue-600 text-white">
-                  POA
-                </p>
-              ) : (
-                <p className="text-lg font-semibold text-blue-600 dark:text-yellow-500">
-                  {car.price}
-                </p>
-              )}
+  {/* BADGE ABOVE EVERYTHING */}
+  <div className="absolute top-2 right-2 z-30 pointer-events-none">
+    <StatusBadge
+      featured={Number(car.featured)}
+      reserved={isReserved ? 1 : 0}
+      sold={isSold ? 1 : 0}
+    />
+  </div>
 
-<button
-  disabled={car.sold === 1 || car.reserved === 1}
-  className={`mt-4 w-full py-2 rounded-lg transition-colors ${
-    car.sold === 1 || car.reserved === 1
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 hover:bg-blue-700 dark:hover:bg-yellow-400"
-  }`}
->
-  View Details
-</button> </div>
-            </div>
-          </a>
-        );
-        })}
-        
+  {/* CARD WRAPPER (can safely be greyed out) */}
+  <div
+    className={`rounded-xl overflow-hidden shadow-lg transition-all ${
+      isDisabled
+        ? "opacity-60 grayscale cursor-not-allowed"
+        : "hover:shadow-2xl"
+    }`}
+  >
+
+    {/* FULL CARD CLICKABLE OVERLAY */}
+    {!isDisabled && (
+      <a
+        href={`/vehicle/${car.stockID}`}
+        className="absolute inset-0 z-20"
+        aria-label={`View details for ${car.name}`}
+      />
+    )}
+
+    {/* IMAGE */}
+    <div className="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <img
+        src={images.thumb400}
+        srcSet={`${images.thumb400} 1x, ${images.thumb800} 2x`}
+        alt={car.name}
+        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+
+    {/* CONTENT */}
+    <div className="p-4">
+      <h3 className="text-lg font-medium mb-1">{car.name}</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+        {car.mileage}
+      </p>
+
+      {/* PRICE / STATUS */}
+      <div className="mb-4">
+        {isSold ? (
+          <p className="text-red-600 dark:text-red-400 font-semibold">Sold</p>
+        ) : isReserved ? (
+          <p className="text-amber-600 dark:text-amber-400 font-semibold">
+            Deposit Taken
+          </p>
+        ) : Number(car.featured) === 1 ? (
+          <p className="text-blue-600 dark:text-yellow-500 font-semibold">
+            POA
+          </p>
+        ) : (
+          <p className="text-lg font-semibold text-blue-600 dark:text-yellow-500">
+            {car.price}
+          </p>
+        )}
       </div>
+
+      {/* BUTTON */}
+      <button
+        disabled={isDisabled}
+        className={`w-full py-2 rounded-lg transition-colors ${
+          isDisabled
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 hover:bg-blue-700 dark:hover:bg-yellow-400"
+        }`}
+      >
+        View Details
+      </button>
+    </div>
+
+  </div>
+</div>
+
+  );
+})}
+
+</div>
+
+
 <div className="flex justify-center items-center gap-2 mt-10">
 
   {/* PREVIOUS */}

@@ -21,7 +21,7 @@ export function Header() {
             </a>
             <a href="/stock" className="nav-link">Inventory</a>
             <a href="/about" className="nav-link">About</a>
-            <a href="#contact" className="nav-link">Contact</a>
+            <a href="/contact" className="nav-link">Contact</a>
 
             <button
               onClick={toggleTheme}

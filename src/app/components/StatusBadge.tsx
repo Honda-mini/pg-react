@@ -5,9 +5,12 @@ type StatusBadgeProps = {
 };
 
 const StatusBadge = ({ featured, reserved, sold }: StatusBadgeProps) => {
+  const baseClasses =
+    "absolute top-2 right-2 px-3 py-1 rounded text-white text-xs font-semibold shadow filter-none [filter:none]";
+
   if (sold) {
     return (
-      <div className="absolute top-2 right-2 px-3 py-1 rounded bg-red-600 text-white text-xs font-semibold shadow">
+      <div className={`${baseClasses} bg-red-600`}>
         SOLD
       </div>
     );
@@ -15,7 +18,7 @@ const StatusBadge = ({ featured, reserved, sold }: StatusBadgeProps) => {
 
   if (reserved) {
     return (
-      <div className="absolute top-2 right-2 px-3 py-1 rounded bg-amber-500 text-white text-xs font-semibold shadow">
+      <div className={`${baseClasses} bg-amber-500`}>
         DEPOSIT TAKEN
       </div>
     );
@@ -23,7 +26,7 @@ const StatusBadge = ({ featured, reserved, sold }: StatusBadgeProps) => {
 
   if (featured) {
     return (
-      <div className="absolute top-2 right-2 px-3 py-1 rounded bg-blue-600 text-white text-xs font-semibold shadow">
+      <div className={`${baseClasses} bg-blue-600`}>
         POA
       </div>
     );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import StatusBadge from "./StatusBadge";
-
+import { Link } from "react-router-dom";
 
 interface Car {
   id: number;
@@ -98,7 +98,16 @@ export function CarSlider() {
         <Slider {...settings}>
           {cars.map((car) => (
             <div key={car.id} className="px-4 min-h-[584px]">
-          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow h-full flex flex-col">
+          <div className="relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow h-full flex flex-col">
+
+          {car.sold === 0 && car.reserved === 0 && (
+  <Link
+    to={`/vehicle/${car.id}`}
+    className="absolute inset-0 z-20"
+    aria-label={`View details for ${car.name}`}
+  />
+)}
+
 <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden">
 
   {/* Badge ABOVE everything, its own layer */}

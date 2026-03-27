@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import VehicleGalleryPremium from "../app/components/VehicleGalleryPremium";
-import { Vehicle } from "../types/Vehicle"; // optional if you store interfaces separately
+// import { Vehicle } from "../types/Vehicle"; // optional if you store interfaces separately
 import { PremiumDescription } from "../app/components/PremiumDescription";
+import { Link } from "react-router-dom";
+
+
 
 const VehiclePage: React.FC = () => {
   const { id } = useParams();
-  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [vehicle, setVehicle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,6 +39,10 @@ const VehiclePage: React.FC = () => {
   if (loading) return <p>Loading vehicle…</p>;
   if (!vehicle) return <p>Vehicle not found.</p>;
 
+  const isSold = Number(vehicle.sold) === 1;
+  const isReserved = Number(vehicle.reserved) === 1;
+  const isDisabled = isSold || isReserved;
+
   return (
     
     <div className="vehicle-page p-4">
@@ -49,15 +56,29 @@ const VehiclePage: React.FC = () => {
       <h1>{vehicle.name}</h1>
 
 <div className="sticky top-[60px] z-50 bg-white/85 dark:bg-gray-900/90 backdrop-blur-md rounded-lg">
-<div className="flex items-center justify-center gap-4 mt-4">
-  <p className="text-3xl font-bold">
-    £{vehicle.price.toLocaleString()}
-  </p>
-  <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
-    Reserve Now
-  </button>
+  <div className="flex items-center justify-center gap-4 mt-4">
+    <p className="text-3xl font-bold">
+      £{vehicle.price.toLocaleString()}
+    </p>
+
+    {isDisabled ? (
+      <button
+        disabled
+        className="bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed"
+      >
+        Not Available
+      </button>
+    ) : (
+      <Link
+        to={`/contact?car=${encodeURIComponent(vehicle.name)}&id=${vehicle.stockID}`}
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Reserve Now
+      </Link>
+    )}
+  </div>
 </div>
-</div>
+
 
       <VehicleGalleryPremium images={vehicle.images} />
 
@@ -76,14 +97,34 @@ const VehiclePage: React.FC = () => {
       <div className="vehicle-description">
 <PremiumDescription raw={vehicle.description} />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t p-4 flex justify-between items-center md:hidden">
-  <span className="text-xl font-bold">
-    £{vehicle.price.toLocaleString()}
-  </span>
-  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
-    Reserve Now
-  </button>
+      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t p-4 md:hidden">
+  <div className="flex items-center gap-4">
+    
+    <span className="text-xl font-bold whitespace-nowrap">
+      £{vehicle.price.toLocaleString()}
+    </span>
+
+    <div className="flex-1">
+      {isDisabled ? (
+        <button
+          disabled
+          className="w-full py-3 rounded-lg bg-gray-400 cursor-not-allowed"
+        >
+          Not Available
+        </button>
+      ) : (
+        <Link
+          to={`/contact?car=${encodeURIComponent(vehicle.name)}&id=${vehicle.stockID}`}
+          className="w-full py-3 rounded-lg bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 hover:bg-blue-700 dark:hover:bg-yellow-400 transition-colors block text-center"
+        >
+          Reserve Now
+        </Link>
+      )}
+    </div>
+
+  </div>
 </div>
+
 
     </div>
     

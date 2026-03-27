@@ -9,6 +9,7 @@ import HomePage from "../pages/HomePage"; // we will create this
 import VehiclePage from "../pages/VehiclePage"; // we will create this
 import AlloyGatorPage from '../pages/AlloyGator';
 import AboutPage from '../pages/AboutUs';
+import ContactPage from '../pages/ContactPage';
 
 export default function App() {
   return (
@@ -23,6 +24,8 @@ export default function App() {
             <Route path="/vehicle/:id" element={<VehiclePage />} />
             <Route path="/alloygator" element={<AlloyGatorPage />} />
             <Route path="/about" element={<AboutPage />} /> 
+            <Route path="/contact" element={<ContactPage />} /> 
+            <Route path="*" element={<HomePage />} /> {/* Fallback route for undefined paths */}
           </Routes>
 
           <Footer />
