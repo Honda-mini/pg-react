@@ -54,7 +54,7 @@ while ($car = $result->fetch_assoc()) {
 
     // Build first image path
     
-$folder = __DIR__ . "/../public/images/cars/" . $car['stockID'] . "/";
+$folder = __DIR__ . "/../images/cars/" . $car['stockID'] . "/";
 $publicPath = "../images/cars/" . $car['stockID'] . "/";
 
 $image = "/images/no-image.svg";

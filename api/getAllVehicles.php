@@ -53,7 +53,7 @@ while ($car = $result->fetch_assoc()) {
     $car['reserved'] = $car['reserved'] == 1;
 
     // --- Image handling ---
-    $folder = __DIR__ . "/../public/images/cars/" . $car['stockID'] . "/";
+    $folder = __DIR__ . "/../images/cars/" . $car['stockID'] . "/";
     $publicPath = "/images/cars/" . $car['stockID'] . "/";
 
     // Default to no-image

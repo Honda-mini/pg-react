@@ -58,7 +58,7 @@ if (!empty($car['mileage'])) {
 $car['price'] = (int)$car['price'];
 
 // Build WebP-only image array
-$folder = __DIR__ . "/../public/images/cars/" . $stockID . "/";
+$folder = __DIR__ . "/../images/cars/" . $stockID . "/";
 $publicPath = "/images/cars/" . $stockID . "/";
 $images = [];
 
@@ -81,7 +81,7 @@ if (is_dir($folder)) {
 
 // Fallback if no images found
 if (empty($images)) {
-    $images[] = "/../public/images/no-image.svg";
+    $images[] = "/../images/no-image.svg";
 }
 
 $car['images'] = $images;
