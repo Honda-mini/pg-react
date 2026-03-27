@@ -20,17 +20,21 @@ export function PremiumDescription({ raw }: Props) {
   let currentList: string[] = [];
 
   const flushList = () => {
-    if (currentList.length > 0) {
-      elements.push(
-        <ul className="list-none space-y-0" key={elements.length}>
-          {currentList.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
-      );
-      currentList = [];
-    }
-  };
+  if (currentList.length > 0) {
+    elements.push(
+      <ul className="list-none space-y-1 pl-0" key={elements.length}>
+        {currentList.map((item, i) => (
+          <li key={i} className="flex items-start gap-2">
+            <span className="text-primary font-semibold">•</span>
+            <span>{item.replace(/^✓|^✅/, "").trim()}</span>
+          </li>
+        ))}
+      </ul>
+    );
+    currentList = [];
+  }
+};
+
 
   lines.forEach((line) => {
     if (line.startsWith("✓") || line.startsWith("✅")) {
@@ -43,5 +47,9 @@ export function PremiumDescription({ raw }: Props) {
 
   flushList(); // flush any remaining ticks
 
-  return <div className="text-gray-800 dark:text-white leading-relaxed space-y-2">{elements}</div>;
+return (
+  <div className="text-gray-800 dark:text-white leading-[1.55] space-y-3 max-w-prose">
+    {elements}
+  </div>
+);
 }
