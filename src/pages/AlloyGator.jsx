@@ -2,13 +2,7 @@ import React from "react";
 
 export default function AlloyGatorPage() {
   return (
-    <div className="relative overflow-hidden">
-      {/* Hero Background */}
-      <img
-        src="/images/ally-hero.svg"
-        alt=""
-        className="fixed inset-0 w-full h-full object-cover opacity-10 pointer-events-none select-none"
-      />
+    <div className="alloygator-hero relative overflow-hidden">
       {/* Hero */}
           <div className="max-w-5xl mx-auto px-4 py-10 space-y-12">
 <img src="/images/ally_light_hq.svg" alt="AlloyGator Logo" className="w-full max-w-lg mx-auto mb-6" />

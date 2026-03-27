@@ -210,11 +210,20 @@ html.theme-ready *::after {
   }
 }
 .alloygator-hero {
-  background-image: url('/assets/ally-hero.svg');
-  background-size: contain; /* or cover depending on layout */
+  position: relative;
+}
+
+.alloygator-hero::before {
+  content: "";
+  position: fixed;      /* matches your <img> */
+  inset: 0;
+  background-image: url('/images/ally-hero.svg');
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.05; /* subtle watermark */
+  opacity: 0.10;        /* same as your <img> */
+  pointer-events: none;
+  z-index: 0;
 }
 .admin-icon {
   position: absolute;

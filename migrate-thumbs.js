@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const carsRoot = './public/images/cars';
+const carsRoot = './images/cars';
 
 function migrateThumbs() {
   const carFolders = fs.readdirSync(carsRoot);

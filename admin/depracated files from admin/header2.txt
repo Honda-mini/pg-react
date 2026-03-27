@@ -1,2 +1,0 @@
-<h1>PG Services Admin Area</h1><br>
-<p>Here you can add vehicles to stock and manage stock, photos etc</p>
