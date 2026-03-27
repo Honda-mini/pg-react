@@ -6,7 +6,7 @@ import sharp from 'sharp';
 const originalsRoot = '../pg/images/cars';
 
 // DESTINATION: reactPg public folder
-const outputRoot = './public/images/cars';
+const outputRoot = './images/cars';
 
 async function generate800px() {
   const carFolders = fs.readdirSync(originalsRoot);
