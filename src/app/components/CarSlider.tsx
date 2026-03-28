@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Slider from "react-slick";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import { Link } from "react-router-dom";
@@ -16,38 +17,22 @@ interface Car {
   sold: number;
 }
 
-function NextArrow(props: any) {
-  const { onClick } = props;
-  return (
-    <button
-      onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center hover:bg-blue-600 dark:hover:bg-yellow-500 hover:text-white transition-all group shadow-lg"
-      aria-label="Next slide"
-    >
-      <ChevronRight className="w-6 h-6 text-gray-900 dark:text-white group-hover:text-white dark:group-hover:text-gray-900" />
-    </button>
-  );
-}
-
-function PrevArrow(props: any) {
-  const { onClick } = props;
-  return (
-    <button
-      onClick={onClick}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center hover:bg-blue-600 dark:hover:bg-yellow-500 hover:text-white transition-all group shadow-lg"
-      aria-label="Previous slide"
-    >
-      <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-white group-hover:text-white dark:group-hover:text-gray-900" />
-    </button>
-  );
-}
-
 export function CarSlider() {
   const [cars, setCars] = useState<Car[]>([]);
+ const [emblaRef, emblaApi] = useEmblaCarousel(
+  { loop: true, align: "start" },
+  [
+    Autoplay({
+      delay: 3500,          // same as your old 4s
+      stopOnMouseEnter: true,
+      stopOnInteraction: false,
+      playOnInit: true,
+    }),
+  ]
+);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/cars.php`)
-
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((car: any) => ({
@@ -65,27 +50,14 @@ export function CarSlider() {
       });
   }, []);
 
-  const settings = {
-    dots: false,
-    infinite: cars.length > 1,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    pauseOnHover: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-   // rtl: true,
-    responsive: [
-      { breakpoint: 769, settings: { slidesToShow: 2 }},
-      { breakpoint: 480, settings: { slidesToShow: 1 }},
-    ],
-  };
+  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
+  const scrollNext = () => emblaApi && emblaApi.scrollNext();
 
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-800" id="inventory">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+        {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Featured Vehicles
@@ -95,84 +67,118 @@ export function CarSlider() {
           </p>
         </div>
 
-        <Slider {...settings}>
-          {cars.map((car) => (
-            <div key={car.id} className="px-4 min-h-[584px]">
-          <div className="relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow h-full flex flex-col">
+        {/* Slider */}
+        <div className="relative">
+          {/* Arrows */}
+          <button
+            onClick={scrollPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center hover:bg-blue-600 dark:hover:bg-yellow-500 hover:text-white transition-all shadow-lg"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-          {car.sold === 0 && car.reserved === 0 && (
-  <Link
-    to={`/vehicle/${car.id}`}
-    className="absolute inset-0 z-20"
-    aria-label={`View details for ${car.name}`}
-  />
-)}
+          <button
+            onClick={scrollNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center hover:bg-blue-600 dark:hover:bg-yellow-500 hover:text-white transition-all shadow-lg"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
 
-<div className="relative h-64 md:h-72 lg:h-80 overflow-hidden">
+          {/* Embla viewport */}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
 
-  {/* Badge ABOVE everything, its own layer */}
-  <div className="absolute top-2 right-2 z-30 pointer-events-none">
-    <StatusBadge
-      featured={car.featured}
-      reserved={car.reserved}
-      sold={car.sold}
-    />
-  </div>
+              {cars.map((car) => (
+                <div
+                  key={car.id}
+                  className="
+                    min-w-full
+                    sm:min-w-[50%]
+                    lg:min-w-[33.333%]
+                    px-2
+                  "
+                >
+                  <div className="relative bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow h-full flex flex-col">
 
-  {/* Image BELOW the badge */}
-  <img
-    src={car.image}
-    alt={car.name}
-    className={`w-full h-full object-cover hover:scale-110 transition-transform duration-300 ${
-      car.sold === 1 || car.reserved === 1 ? "grayscale opacity-60" : ""
-    }`}
-    onError={(e) => (e.currentTarget.src = "/images/no-image.svg")}
-  />
+                    {car.sold === 0 && car.reserved === 0 && (
+                      <Link
+                        to={`/vehicle/${car.id}`}
+                        className="absolute inset-0 z-20"
+                      />
+                    )}
 
-</div>
+                    {/* Image */}
+                    <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden">
 
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-3">
-                      {car.name}
-                    </h3>
+                      <div className="absolute top-2 right-2 z-30 pointer-events-none">
+                        <StatusBadge
+                          featured={car.featured}
+                          reserved={car.reserved}
+                          sold={car.sold}
+                        />
+                      </div>
 
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {car.year} • {car.mileage}
-                      </span>
+                      <img
+                        src={car.image}
+                        alt={car.name}
+                        className={`w-full h-full object-cover transition-transform duration-300 hover:scale-110 ${
+                          car.sold === 1 || car.reserved === 1
+                            ? "grayscale opacity-60"
+                            : ""
+                        }`}
+                        onError={(e) =>
+                          (e.currentTarget.src = "/images/no-image.svg")
+                        }
+                      />
                     </div>
-                  </div>
 
-                  <div className="space-y-3">
-<div className="text-xl font-bold text-blue-600 dark:text-yellow-500">
-  {car.sold === 1 ? (
-    <span className="text-red-600 dark:text-red-400">Sold</span>
-  ) : car.reserved === 1 ? (
-    <span className="text-amber-600 dark:text-amber-400">Deposit Taken</span>
-  ) : car.featured === 1 ? (
-    <span className="text-blue-600 dark:text-yellow-500">POA</span>
-  ) : (
-    car.price
-  )}
-</div>
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-3">
+                          {car.name}
+                        </h3>
 
-<button
-  disabled={car.sold === 1 || car.reserved === 1}
-  className={`w-full py-3 rounded-lg transition-colors ${
-    car.sold === 1 || car.reserved === 1
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 hover:bg-blue-700 dark:hover:bg-yellow-400"
-  }`}
->
-  View Details
-</button>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {car.year} • {car.mileage}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="text-xl font-bold text-blue-600 dark:text-yellow-500">
+                          {car.sold === 1 ? (
+                            <span className="text-red-600 dark:text-red-400">Sold</span>
+                          ) : car.reserved === 1 ? (
+                            <span className="text-amber-600 dark:text-amber-400">Deposit Taken</span>
+                          ) : car.featured === 1 ? (
+                            <span>POA</span>
+                          ) : (
+                            car.price
+                          )}
+                        </div>
+
+                        <button
+                          disabled={car.sold === 1 || car.reserved === 1}
+                          className={`w-full py-3 rounded-lg ${
+                            car.sold === 1 || car.reserved === 1
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-blue-600 dark:bg-yellow-500 text-white dark:text-gray-900 hover:bg-blue-700 dark:hover:bg-yellow-400"
+                          }`}
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-              </div>
+              ))}
+
             </div>
-          ))}
-        </Slider>
+          </div>
+        </div>
       </div>
     </section>
   );
